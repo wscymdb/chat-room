@@ -15,9 +15,11 @@ import {
   LogoutOutlined,
   UserOutlined,
   SearchOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
+import { useNavigate } from "react-router-dom";
 import "./index.less";
 
 const { Header, Content, Sider } = Layout;
@@ -27,6 +29,7 @@ const { Text } = Typography;
 const ChatRoomPage: React.FC = () => {
   const { user, logout } = useAuth();
   const { messages, onlineUsers, sendMessage } = useSocket();
+  const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -112,9 +115,23 @@ const ChatRoomPage: React.FC = () => {
             <Avatar icon={<UserOutlined />} />
             <Text>{user?.username}</Text>
           </Space>
-          <Button type="text" icon={<LogoutOutlined />} onClick={logout} danger>
-            退出
-          </Button>
+          <Space>
+            <Button
+              type="text"
+              icon={<SettingOutlined />}
+              onClick={() => navigate("/admin")}
+            >
+              管理
+            </Button>
+            <Button
+              type="text"
+              icon={<LogoutOutlined />}
+              onClick={logout}
+              danger
+            >
+              退出
+            </Button>
+          </Space>
         </Header>
         <Content className="content">
           <div className="messages-container">

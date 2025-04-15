@@ -1,0 +1,123 @@
+.admin-page {
+  .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .site-layout {
+    .site-layout-background {
+      background: #fff;
+    }
+  }
+
+  .ant-layout-sider {
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+  }
+
+  .ant-menu {
+    border-right: none;
+  }
+
+  .ant-layout {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .ant-layout-content {
+    height: calc(100vh - 64px);
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  .content-container {
+    height: calc(100% - 32px);
+    display: flex;
+    gap: 16px;
+  }
+
+  .left-panel {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right-panel {
+    width: 300px;
+    flex-shrink: 0;
+  }
+
+  .table-container {
+    flex: 1;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    .ant-table-wrapper {
+      height: 100%;
+      .ant-table {
+        height: 100%;
+        .ant-table-container {
+          height: 100%;
+          .ant-table-thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            .ant-table-cell {
+              background: #fafafa;
+              color: #666;
+              font-weight: 500;
+              padding: 12px 16px;
+              &::before {
+                display: none;
+              }
+            }
+          }
+          .ant-table-body {
+            height: calc(100% - 39px) !important;
+            overflow-y: auto !important;
+            .ant-table-cell {
+              padding: 12px 16px;
+            }
+          }
+        }
+      }
+    }
+    .ant-pagination {
+      margin: 16px 0 0;
+      padding: 0 16px;
+    }
+  }
+
+  .stat-card {
+    .ant-card-head {
+      padding: 0 16px;
+      min-height: 48px;
+      .ant-card-head-title {
+        padding: 12px 0;
+      }
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: #fafafa;
+      border-radius: 8px;
+
+      .stat-icon {
+        font-size: 24px;
+        color: #1890ff;
+      }
+
+      .stat-info {
+        flex: 1;
+        .ant-typography {
+          margin: 0;
+        }
+      }
+    }
+  }
+}

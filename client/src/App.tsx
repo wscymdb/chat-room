@@ -4,6 +4,7 @@ import { SocketProvider } from "./contexts/SocketContext";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ChatRoomPage from "./pages/ChatRoomPage";
+import AdminPage from "./pages/AdminPage";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -18,6 +19,14 @@ function App() {
             element={
               <PrivateRoute>
                 <ChatRoomPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminPage />
               </PrivateRoute>
             }
           />

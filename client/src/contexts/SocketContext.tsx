@@ -31,6 +31,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
   const { user } = useAuth();
+  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -47,6 +48,11 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
 
     newSocket.on("message", (message: Message) => {
       setMessages((prev) => [...prev, message]);
+      // 如果当前窗口不是活动窗口，显示新消息提示
+      if (document.hidden) {
+        setHasNewMessage(true);
+        updateTitle(true);
+      }
     });
 
     newSocket.on("messages", (historyMessages: Message[]) => {
@@ -70,8 +76,19 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     );
 
+    // 监听窗口可见性变化
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setHasNewMessage(false);
+        updateTitle(false);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
       newSocket.close();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [user]);
 
@@ -96,11 +113,19 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
   );
 };
-
 export const useSocket = () => {
   const context = useContext(SocketContext);
   if (context === undefined) {
     throw new Error("useSocket must be used within a SocketProvider");
   }
   return context;
+};
+
+// 创建并更新 favicon
+const updateTitle = (hasNewMessage: boolean) => {
+  if (hasNewMessage) {
+    document.title = "🟢 聊天室";
+  } else {
+    document.title = "聊天室";
+  }
 };
