@@ -24,8 +24,15 @@ import {
   TeamOutlined,
   DeleteOutlined,
   EditOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 import { User, UserRole, ROLE_NAMES } from "../../types/auth";
@@ -45,6 +52,9 @@ interface Message {
 }
 
 const AdminPage: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, logout, hasPermission } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState("1");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -53,7 +63,14 @@ const AdminPage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [form] = Form.useForm();
-  const { user: currentUser, hasPermission } = useAuth();
+
+  useEffect(() => {
+    if (!hasPermission(UserRole.ADMIN)) {
+      navigate("/chat");
+    }
+    fetchMessages();
+    fetchUsers();
+  }, []);
 
   const fetchMessages = async () => {
     try {
@@ -80,13 +97,10 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (activeTab === "1") {
-      fetchMessages();
-    } else if (activeTab === "2") {
-      fetchUsers();
-    }
-  }, [activeTab]);
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const handleDeleteMessage = async (id: string) => {
     try {
@@ -206,16 +220,13 @@ const AdminPage: React.FC = () => {
           return null;
         }
 
-        if (
-          currentUser?.role === UserRole.ADMIN &&
-          record.role === UserRole.ADMIN
-        ) {
+        if (user?.role === UserRole.ADMIN && record.role === UserRole.ADMIN) {
           return null;
         }
 
         if (
-          currentUser?.role === UserRole.SUPER_ADMIN ||
-          currentUser?.role === UserRole.ADMIN
+          user?.role === UserRole.SUPER_ADMIN ||
+          user?.role === UserRole.ADMIN
         ) {
           return (
             <Space>
@@ -242,10 +253,10 @@ const AdminPage: React.FC = () => {
   ];
 
   const availableRoles = () => {
-    if (currentUser?.role === UserRole.SUPER_ADMIN) {
+    if (user?.role === UserRole.SUPER_ADMIN) {
       return [UserRole.ADMIN, UserRole.USER];
     }
-    if (currentUser?.role === UserRole.ADMIN) {
+    if (user?.role === UserRole.ADMIN) {
       return [UserRole.USER];
     }
     return [];
@@ -357,40 +368,93 @@ const AdminPage: React.FC = () => {
   };
 
   return (
-    <Layout className="admin-page" style={{ minHeight: "100vh" }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-        theme="light"
-      >
-        <div className="logo" />
-        <Menu
-          theme="light"
-          selectedKeys={[activeTab]}
-          mode="inline"
-          onClick={({ key }) => setActiveTab(key)}
-          items={[
-            {
-              key: "1",
-              icon: <MessageOutlined />,
-              label: "消息管理",
-            },
-            {
-              key: "2",
-              icon: <UserOutlined />,
-              label: "用户管理",
-            },
-          ]}
-        />
-      </Sider>
+    <Layout className="admin-layout">
+      <Header className="admin-header">
+        <div className="logo">聊天室管理系统</div>
+        <div className="user-info">
+          <span>欢迎，{user?.username}</span>
+          <Button
+            type="text"
+            icon={<LogoutOutlined />}
+            onClick={handleLogout}
+            className="logout-button"
+          >
+            退出
+          </Button>
+        </div>
+      </Header>
       <Layout>
-        <Content
-          style={{ margin: "24px 16px", padding: 24, background: "#fff" }}
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+          theme="light"
         >
-          {renderContent()}
+          <div className="logo" />
+          <Menu
+            theme="light"
+            selectedKeys={[location.pathname]}
+            mode="inline"
+            style={{ height: "100%", borderRight: 0 }}
+          >
+            <Menu.Item key="/admin/users" icon={<UserOutlined />}>
+              <Link to="/admin/users">用户管理</Link>
+            </Menu.Item>
+            <Menu.Item key="/admin/messages" icon={<MessageOutlined />}>
+              <Link to="/admin/messages">消息管理</Link>
+            </Menu.Item>
+            <Menu.Item key="/admin/settings" icon={<SettingOutlined />}>
+              <Link to="/admin/settings">系统设置</Link>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Content className="admin-content">
+          <Routes>
+            <Route
+              path="users"
+              element={
+                <div>
+                  <div className="content-header">
+                    <Title level={3}>用户管理</Title>
+                    <Button
+                      type="primary"
+                      onClick={() => setModalVisible(true)}
+                    >
+                      添加用户
+                    </Button>
+                  </div>
+                  <Table
+                    columns={userColumns}
+                    dataSource={users}
+                    rowKey="id"
+                    loading={loading}
+                    pagination={{ pageSize: 10 }}
+                  />
+                </div>
+              }
+            />
+            <Route
+              path="messages"
+              element={
+                <div>
+                  <Title level={3}>消息管理</Title>
+                  {renderContent()}
+                </div>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <div>
+                  <Title level={3}>系统设置</Title>
+                  {/* 系统设置内容 */}
+                </div>
+              }
+            />
+          </Routes>
         </Content>
       </Layout>
+
       <Modal
         title={editingUser ? "编辑用户" : "添加用户"}
         open={modalVisible}

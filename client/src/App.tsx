@@ -4,7 +4,10 @@ import { SocketProvider } from "./contexts/SocketContext";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ChatRoomPage from "./pages/ChatRoomPage";
-import AdminPage from "./pages/AdminPage";
+import AdminLayout from "./layouts/AdminLayout";
+import UsersPage from "./pages/Admin/Users";
+import MessagesPage from "./pages/Admin/Messages";
+import SettingsPage from "./pages/Admin/Settings";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -23,13 +26,18 @@ function App() {
             }
           />
           <Route
-            path="/admin"
+            path="/admin/*"
             element={
               <PrivateRoute>
-                <AdminPage />
+                <AdminLayout />
               </PrivateRoute>
             }
-          />
+          >
+            <Route path="users" element={<UsersPage />} />
+            <Route path="messages" element={<MessagesPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            <Route path="" element={<Navigate to="users" replace />} />
+          </Route>
           <Route path="/" element={<Navigate to="/chat" replace />} />
         </Routes>
       </SocketProvider>
