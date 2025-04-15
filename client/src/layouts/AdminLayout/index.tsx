@@ -5,6 +5,7 @@ import {
   MessageOutlined,
   SettingOutlined,
   LogoutOutlined,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -23,10 +24,38 @@ const AdminLayout: React.FC = () => {
     navigate("/login");
   };
 
+  const menuItems = [
+    {
+      key: "/admin/users",
+      icon: <UserOutlined />,
+      label: <Link to="/admin/users">用户管理</Link>,
+    },
+    {
+      key: "/admin/messages",
+      icon: <MessageOutlined />,
+      label: <Link to="/admin/messages">消息管理</Link>,
+    },
+    {
+      key: "/admin/settings",
+      icon: <SettingOutlined />,
+      label: <Link to="/admin/settings">系统设置</Link>,
+    },
+  ];
+
   return (
     <Layout className="admin-layout">
       <Header className="admin-header">
-        <div className="logo">聊天室管理系统</div>
+        <div className="header-left">
+          <Button
+            type="text"
+            icon={<ArrowLeftOutlined />}
+            onClick={() => navigate("/chat")}
+            className="back-button"
+          >
+            返回聊天室
+          </Button>
+          <div className="logo">聊天室管理系统</div>
+        </div>
         <div className="user-info">
           <span>欢迎，{user?.username}</span>
           <Button
@@ -51,17 +80,8 @@ const AdminLayout: React.FC = () => {
             selectedKeys={[location.pathname]}
             mode="inline"
             style={{ height: "100%", borderRight: 0 }}
-          >
-            <Menu.Item key="/admin/users" icon={<UserOutlined />}>
-              <Link to="/admin/users">用户管理</Link>
-            </Menu.Item>
-            <Menu.Item key="/admin/messages" icon={<MessageOutlined />}>
-              <Link to="/admin/messages">消息管理</Link>
-            </Menu.Item>
-            <Menu.Item key="/admin/settings" icon={<SettingOutlined />}>
-              <Link to="/admin/settings">系统设置</Link>
-            </Menu.Item>
-          </Menu>
+            items={menuItems}
+          />
         </Sider>
         <Content className="admin-content">
           <Outlet />

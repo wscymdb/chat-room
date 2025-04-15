@@ -24,7 +24,7 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const UsersPage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,18 +32,25 @@ const UsersPage: React.FC = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    if (token) {
+      fetchUsers();
+    }
+  }, [token]);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/users`
+        `${import.meta.env.VITE_API_URL}/api/users`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUsers(response.data);
-    } catch (error) {
-      message.error("获取用户列表失败");
+    } catch (error: any) {
+      message.error(error.response?.data?.message || "获取用户列表失败");
     } finally {
       setLoading(false);
     }
@@ -51,17 +58,24 @@ const UsersPage: React.FC = () => {
 
   const handleEditUser = (record: User) => {
     setEditingUser(record);
-    form.setFieldsValue(record);
+    form.setFieldsValue({
+      username: record.username,
+      role: record.role,
+    });
     setModalVisible(true);
   };
 
   const handleDeleteUser = async (id: string) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       message.success("删除成功");
       fetchUsers();
-    } catch (error) {
-      message.error("删除失败");
+    } catch (error: any) {
+      message.error(error.response?.data?.message || "删除失败");
     }
   };
 
@@ -70,19 +84,30 @@ const UsersPage: React.FC = () => {
       if (editingUser) {
         await axios.put(
           `${import.meta.env.VITE_API_URL}/api/users/${editingUser.id}`,
-          values
+          values,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         message.success("更新成功");
       } else {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, values);
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, values, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         message.success("添加成功");
       }
       setModalVisible(false);
       form.resetFields();
       setEditingUser(null);
       fetchUsers();
-    } catch (error) {
-      message.error(editingUser ? "更新失败" : "添加失败");
+    } catch (error: any) {
+      message.error(
+        error.response?.data?.message || (editingUser ? "更新失败" : "添加失败")
+      );
     }
   };
 
@@ -102,49 +127,64 @@ const UsersPage: React.FC = () => {
       title: "操作",
       key: "action",
       render: (_: any, record: User) => {
-        if (record.role === UserRole.SUPER_ADMIN) {
-          return null;
-        }
-
-        if (user?.role === UserRole.ADMIN && record.role === UserRole.ADMIN) {
+        if (user?.role === UserRole.USER) {
           return null;
         }
 
         if (
-          user?.role === UserRole.SUPER_ADMIN ||
-          user?.role === UserRole.ADMIN
+          user?.role === UserRole.ADMIN &&
+          record.role === UserRole.SUPER_ADMIN
         ) {
-          return (
-            <Space>
-              <Button
-                type="text"
-                icon={<EditOutlined />}
-                onClick={() => handleEditUser(record)}
-              />
-              <Button
-                type="text"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={() => handleDeleteUser(record.id)}
-              />
-            </Space>
-          );
+          return null;
         }
 
-        return null;
+        return (
+          <Space>
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => handleEditUser(record)}
+            >
+              编辑
+            </Button>
+            {(user?.role === UserRole.SUPER_ADMIN ||
+              (user?.role === UserRole.ADMIN && record.id === user.id)) && (
+              <Button
+                type="link"
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => {
+                  Modal.confirm({
+                    title: "确认删除",
+                    content: `确定要删除用户 ${record.username} 吗？`,
+                    okText: "确定",
+                    cancelText: "取消",
+                    onOk: () => handleDeleteUser(record.id),
+                  });
+                }}
+              >
+                删除
+              </Button>
+            )}
+          </Space>
+        );
       },
     },
   ];
 
   const availableRoles = () => {
     if (user?.role === UserRole.SUPER_ADMIN) {
-      return [UserRole.ADMIN, UserRole.USER];
+      return [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.USER];
     }
     if (user?.role === UserRole.ADMIN) {
-      return [UserRole.USER];
+      return [UserRole.ADMIN, UserRole.USER];
     }
     return [];
   };
+
+  if (!token) {
+    return null;
+  }
 
   return (
     <div className="users-page">

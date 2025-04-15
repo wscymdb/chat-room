@@ -5,7 +5,9 @@ interface Message {
   id: string;
   content: string;
   senderId: string;
+  sender?: string;
   timestamp: string;
+  username?: string;
 }
 
 interface Data {
@@ -19,11 +21,52 @@ export const messageRoutes = express.Router();
 // 获取所有消息
 messageRoutes.get("/", async (req, res) => {
   try {
+    const { content, username } = req.query;
     const data = await readData();
-    res.json(data.messages);
+
+    // 获取所有用户信息，用于关联用户名
+    const users = data.users;
+
+    // 处理消息，添加用户名
+    let messages = data.messages.map((msg: Message) => {
+      return {
+        ...msg,
+        sender: msg.username || "未知用户",
+      };
+    });
+
+    // 根据搜索条件过滤消息
+    if (content) {
+      messages = messages.filter((msg: Message) =>
+        msg.content.toLowerCase().includes((content as string).toLowerCase())
+      );
+    }
+
+    if (username) {
+      messages = messages.filter((msg: Message) =>
+        msg.sender?.toLowerCase().includes((username as string).toLowerCase())
+      );
+    }
+
+    res.json(messages);
   } catch (error) {
     console.error("获取消息失败:", error);
     res.status(500).json({ message: "获取消息失败" });
+  }
+});
+
+// 获取所有用户名列表
+messageRoutes.get("/usernames", async (req, res) => {
+  try {
+    const data = await readData();
+    const usernames = data.users.map((user: any) => ({
+      value: user.username,
+      label: user.username,
+    }));
+    res.json(usernames);
+  } catch (error) {
+    console.error("获取用户名列表失败:", error);
+    res.status(500).json({ message: "获取用户名列表失败" });
   }
 });
 

@@ -1,36 +1,75 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, message, Typography, Card, Space } from "antd";
-import { MessageOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Button,
+  message,
+  Typography,
+  Card,
+  Space,
+  Input,
+  Select,
+  Form,
+} from "antd";
+import {
+  MessageOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import "./index.less";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
 interface Message {
   id: string;
   content: string;
-  userId: string;
-  username: string;
+  sender: string;
   timestamp: string;
+}
+
+interface UsernameOption {
+  value: string;
+  label: string;
 }
 
 const MessagesPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [usernames, setUsernames] = useState<UsernameOption[]>([]);
+  const [form] = Form.useForm();
 
   useEffect(() => {
+    fetchUsernames();
     fetchMessages();
   }, []);
 
-  const fetchMessages = async () => {
+  const fetchUsernames = async () => {
     try {
-      setLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/messages`
-      );
+      const response = await axios.get("/api/users");
+      const usernameOptions = response.data.map((user: any) => ({
+        value: user.username,
+        label: user.username,
+      }));
+      setUsernames(usernameOptions);
+    } catch (error) {
+      console.error("获取用户名列表失败:", error);
+    }
+  };
+
+  const fetchMessages = async (searchParams?: {
+    content?: string;
+    username?: string;
+  }) => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/messages", {
+        params: searchParams,
+      });
       setMessages(response.data);
     } catch (error) {
-      message.error("获取消息列表失败");
+      console.error("获取消息列表失败:", error);
     } finally {
       setLoading(false);
     }
@@ -46,6 +85,19 @@ const MessagesPage: React.FC = () => {
     }
   };
 
+  const handleSearch = async (values: any) => {
+    const searchParams = {
+      content: values.content,
+      username: values.username,
+    };
+    await fetchMessages(searchParams);
+  };
+
+  const handleReset = () => {
+    form.resetFields();
+    fetchMessages();
+  };
+
   const columns = [
     {
       title: "ID",
@@ -54,9 +106,9 @@ const MessagesPage: React.FC = () => {
       width: 100,
     },
     {
-      title: "用户名",
-      dataIndex: "username",
-      key: "username",
+      title: "发送者",
+      dataIndex: "sender",
+      key: "sender",
       width: 120,
     },
     {
@@ -92,11 +144,49 @@ const MessagesPage: React.FC = () => {
 
   return (
     <div className="messages-page">
+      <Title level={2}>消息管理</Title>
       <div className="content-container">
         <div className="left-panel">
           <Card>
             <div className="table-header">
               <Title level={4}>消息列表</Title>
+              <Form
+                form={form}
+                layout="inline"
+                onFinish={handleSearch}
+                className="search-form"
+              >
+                <Form.Item name="content">
+                  <Input
+                    placeholder="搜索消息内容"
+                    prefix={<SearchOutlined />}
+                    allowClear
+                  />
+                </Form.Item>
+                <Form.Item name="username">
+                  <Select
+                    placeholder="选择用户"
+                    allowClear
+                    style={{ width: 200 }}
+                  >
+                    {usernames.map((option) => (
+                      <Option key={option.value} value={option.value}>
+                        {option.label}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                <Form.Item>
+                  <Space>
+                    <Button type="primary" htmlType="submit">
+                      搜索
+                    </Button>
+                    <Button onClick={handleReset} icon={<ReloadOutlined />}>
+                      重置
+                    </Button>
+                  </Space>
+                </Form.Item>
+              </Form>
             </div>
             <Table
               columns={columns}

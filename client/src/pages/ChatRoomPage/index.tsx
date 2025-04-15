@@ -20,6 +20,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
 import { useNavigate } from "react-router-dom";
+import { UserRole } from "../../types/auth";
 import "./index.less";
 
 const { Header, Content, Sider } = Layout;
@@ -33,6 +34,8 @@ const ChatRoomPage: React.FC = () => {
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  console.log(user?.role);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,13 +119,16 @@ const ChatRoomPage: React.FC = () => {
             <Text>{user?.username}</Text>
           </Space>
           <Space>
-            <Button
-              type="text"
-              icon={<SettingOutlined />}
-              onClick={() => navigate("/admin")}
-            >
-              管理
-            </Button>
+            {(user?.role === UserRole.ADMIN ||
+              user?.role === UserRole.SUPER_ADMIN) && (
+              <Button
+                type="text"
+                icon={<SettingOutlined />}
+                onClick={() => navigate("/admin")}
+              >
+                管理
+              </Button>
+            )}
             <Button
               type="text"
               icon={<LogoutOutlined />}

@@ -5,6 +5,7 @@ import { Server } from "socket.io";
 import { setupSocket } from "./socket";
 import { messageRoutes } from "./routes/messages";
 import { authRoutes } from "./routes/auth";
+import { userRoutes } from "./routes/users";
 
 const app = express();
 const httpServer = createServer(app);
@@ -15,6 +16,7 @@ app.use(express.json());
 // 路由
 app.use("/api/messages", messageRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 const io = new Server(httpServer, {
   cors: {

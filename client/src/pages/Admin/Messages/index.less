@@ -1,44 +1,57 @@
 .messages-page {
+  padding: 24px;
+
   .content-container {
     display: flex;
     gap: 24px;
-  }
 
-  .left-panel {
-    flex: 1;
-  }
+    .left-panel {
+      flex: 1;
+      min-width: 0;
 
-  .right-panel {
-    width: 300px;
-  }
+      .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
 
-  .table-header {
-    margin-bottom: 16px;
-  }
-
-  .stat-card {
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: #f5f5f5;
-      border-radius: 8px;
-
-      .stat-icon {
-        font-size: 24px;
-        color: #1890ff;
+        .search-form {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
       }
 
-      .stat-info {
-        flex: 1;
+      .ant-table {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
     }
-  }
 
-  .ant-table {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    .right-panel {
+      width: 300px;
+
+      .stat-card {
+        .stat-item {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+
+          .stat-icon {
+            font-size: 24px;
+            color: #1890ff;
+          }
+
+          .stat-info {
+            flex: 1;
+
+            .ant-typography {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
   }
 }
