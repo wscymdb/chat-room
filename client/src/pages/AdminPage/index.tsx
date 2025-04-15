@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Layout,
   Menu,
-  theme,
   Table,
   Input,
   Space,
@@ -19,9 +18,6 @@ import {
   MessageOutlined,
   UserOutlined,
   SettingOutlined,
-  SearchOutlined,
-  UserAddOutlined,
-  TeamOutlined,
   DeleteOutlined,
   EditOutlined,
   LogoutOutlined,
@@ -56,7 +52,6 @@ const AdminPage: React.FC = () => {
   const location = useLocation();
   const { user, logout, hasPermission } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState("1");
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
@@ -263,108 +258,44 @@ const AdminPage: React.FC = () => {
   };
 
   const renderContent = () => {
-    switch (activeTab) {
-      case "1":
-        return (
-          <div className="content-container">
-            <div className="left-panel">
-              <Card>
-                <div className="table-header">
-                  <Title level={4}>消息列表</Title>
-                  <Search
-                    placeholder="搜索消息"
-                    allowClear
-                    style={{ width: 200 }}
-                  />
+    return (
+      <div className="content-container">
+        <div className="left-panel">
+          <Card>
+            <div className="table-header">
+              <Title level={4}>消息列表</Title>
+              <Search
+                placeholder="搜索消息"
+                allowClear
+                style={{ width: 200 }}
+              />
+            </div>
+            <Table
+              columns={messageColumns}
+              dataSource={messages}
+              rowKey="id"
+              pagination={{
+                size: "small",
+                showTotal: (total) => `共 ${total} 条`,
+              }}
+            />
+          </Card>
+        </div>
+        <div className="right-panel">
+          <Card title="消息统计" className="stat-card">
+            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+              <div className="stat-item">
+                <MessageOutlined className="stat-icon" />
+                <div className="stat-info">
+                  <Text type="secondary">总消息数</Text>
+                  <Title level={3}>{messages.length}</Title>
                 </div>
-                <Table
-                  columns={messageColumns}
-                  dataSource={messages}
-                  rowKey="id"
-                  pagination={{
-                    size: "small",
-                    showTotal: (total) => `共 ${total} 条`,
-                  }}
-                />
-              </Card>
-            </div>
-            <div className="right-panel">
-              <Card title="消息统计" className="stat-card">
-                <Space
-                  direction="vertical"
-                  size="large"
-                  style={{ width: "100%" }}
-                >
-                  <div className="stat-item">
-                    <MessageOutlined className="stat-icon" />
-                    <div className="stat-info">
-                      <Text type="secondary">总消息数</Text>
-                      <Title level={3}>{messages.length}</Title>
-                    </div>
-                  </div>
-                </Space>
-              </Card>
-            </div>
-          </div>
-        );
-      case "2":
-        return (
-          <div className="content-container">
-            <div className="left-panel">
-              <Card>
-                <div className="table-header">
-                  <Title level={4}>用户列表</Title>
-                  <Space>
-                    <Search
-                      placeholder="搜索用户"
-                      allowClear
-                      style={{ width: 200 }}
-                    />
-                    {hasPermission(UserRole.ADMIN) && (
-                      <Button
-                        type="primary"
-                        icon={<UserAddOutlined />}
-                        onClick={() => setModalVisible(true)}
-                      >
-                        添加用户
-                      </Button>
-                    )}
-                  </Space>
-                </div>
-                <Table
-                  columns={userColumns}
-                  dataSource={users}
-                  rowKey="id"
-                  loading={loading}
-                  pagination={{
-                    size: "small",
-                    showTotal: (total) => `共 ${total} 条`,
-                  }}
-                />
-              </Card>
-            </div>
-            <div className="right-panel">
-              <Card title="用户统计" className="stat-card">
-                <Space
-                  direction="vertical"
-                  size="large"
-                  style={{ width: "100%" }}
-                >
-                  <div className="stat-item">
-                    <TeamOutlined className="stat-icon" />
-                    <div className="stat-info">
-                      <Text type="secondary">总用户数</Text>
-                      <Title level={3}>{users.length}</Title>
-                    </div>
-                  </div>
-                </Space>
-              </Card>
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
+              </div>
+            </Space>
+          </Card>
+        </div>
+      </div>
+    );
   };
 
   return (

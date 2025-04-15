@@ -31,7 +31,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [messages, setMessages] = useState<Message[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
   const { user } = useAuth();
-  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -50,7 +49,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       setMessages((prev) => [...prev, message]);
       // 如果当前窗口不是活动窗口，显示新消息提示
       if (document.hidden) {
-        setHasNewMessage(true);
         updateTitle(true);
       }
     });
@@ -79,7 +77,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     // 监听窗口可见性变化
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        setHasNewMessage(false);
         updateTitle(false);
       }
     };
