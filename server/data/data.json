@@ -1,0 +1,125 @@
+{
+  "users": [
+    {
+      "id": "1744618385443",
+      "username": "chh",
+      "password": "$2b$10$W6CVuVfq0JxXeo1AHXEZsuZsyuOS1KwFGeWvPTKvLqePIWhecdspy",
+      "createdAt": "2025-04-14T08:13:05.522Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "1744618175123",
+      "content": "212",
+      "userId": "1744618125718",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:09:35.123Z"
+    },
+    {
+      "id": "1744618176194",
+      "content": "1212",
+      "userId": "1744618125718",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:09:36.194Z"
+    },
+    {
+      "id": "1744618400442",
+      "content": "111",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:13:20.442Z"
+    },
+    {
+      "id": "1744618401510",
+      "content": "111",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:13:21.510Z"
+    },
+    {
+      "id": "1744618467546",
+      "content": "111",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:14:27.546Z"
+    },
+    {
+      "id": "1744618563275",
+      "content": "11",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:16:03.275Z"
+    },
+    {
+      "id": "1744618588381",
+      "content": "11",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:16:28.381Z"
+    },
+    {
+      "id": "1744618998651",
+      "content": "京津冀",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:23:18.651Z"
+    },
+    {
+      "id": "1744619012941",
+      "content": "12321",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:23:32.941Z"
+    },
+    {
+      "id": "1744619231871",
+      "content": "11",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:27:11.871Z"
+    },
+    {
+      "id": "1744619232888",
+      "content": "22",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:27:12.888Z"
+    },
+    {
+      "id": "1744619303226",
+      "content": "你奶奶",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:28:23.226Z"
+    },
+    {
+      "id": "1744619304791",
+      "content": "的",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:28:24.791Z"
+    },
+    {
+      "id": "1744621060034",
+      "content": "212323",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T08:57:40.034Z"
+    },
+    {
+      "id": "1744621292121",
+      "content": "11",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T09:01:32.121Z"
+    },
+    {
+      "id": "1744621293284",
+      "content": "ddd",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-14T09:01:33.284Z"
+    }
+  ],
+  "onlineUsers": []
+}

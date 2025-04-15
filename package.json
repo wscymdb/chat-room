@@ -1,0 +1,20 @@
+{
+  "name": "chat-room",
+  "version": "1.0.0",
+  "description": "Real-time chat room application",
+  "scripts": {
+    "start": "concurrently  \"npm run start:client\" \"npm run start:server\"",
+    "dev": "sh start.sh",
+    "start:client": "cd client && npm run dev",
+    "start:server": "cd server && npm run dev",
+    "install:all": "npm install --legacy-peer-deps && cd client && npm install --legacy-peer-deps && cd ../server && npm install --legacy-peer-deps",
+    "build": "npm run build:client && npm run build:server && npm run copy:client",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "copy:client": "mkdir -p server/dist/public && cp -r client/dist/* server/dist/public/ && mkdir -p server/dist/data && cp server/data/data.json server/dist/data/ && cp server/.env server/dist/ && cp server/package.json server/dist/",
+    "start:prod": "cd server && npm run start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 
