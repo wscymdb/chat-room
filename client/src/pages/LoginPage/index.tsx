@@ -14,23 +14,19 @@ const LoginPage: React.FC = () => {
 
   // 检查是否已登录
   useEffect(() => {
-    console.log("LoginPage - 检查登录状态:", { user, token });
     if (user && token) {
-      console.log("LoginPage - 已登录，跳转到聊天页面");
       navigate("/chat");
     }
   }, [user, token, navigate]);
 
   const onFinish = async (values: any) => {
     try {
-      console.log("LoginPage - 开始登录:", values);
       setLoading(true);
       await login(values.username, values.password);
-      console.log("LoginPage - 登录成功，准备跳转");
       message.success("登录成功！");
-      navigate("/chat");
+      // 登录成功后，AuthContext 中的 useEffect 会自动触发导航
     } catch (error: any) {
-      console.error("LoginPage - 登录失败:", error);
+      console.error("登录失败:", error);
       message.error(error.message || "登录失败，请重试");
     } finally {
       setLoading(false);

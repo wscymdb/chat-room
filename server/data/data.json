@@ -4,7 +4,13 @@
       "id": "1744618385443",
       "username": "chh",
       "password": "$2b$10$W6CVuVfq0JxXeo1AHXEZsuZsyuOS1KwFGeWvPTKvLqePIWhecdspy",
-      "createdAt": "2025-04-14T08:13:05.522Z"
+      "role": "SUPER_ADMIN"
+    },
+    {
+      "id": "1744719019532",
+      "username": "zd",
+      "password": "$2b$10$a0W6XufEBw6PgxuVXdAnxu5AY3.HJZMKKUr8NkHNImw1.NeehceBe",
+      "role": "USER"
     }
   ],
   "messages": [
@@ -97,10 +103,6 @@
     {
       "id": "1744618385443",
       "username": "chh"
-    },
-    {
-      "id": "1744708577938",
-      "username": "q"
     }
   ]
 }

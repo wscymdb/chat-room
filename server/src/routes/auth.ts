@@ -3,13 +3,7 @@ import { register, login, getCurrentUser } from "../controllers/auth";
 import bcrypt from "bcrypt";
 import { readData, writeData } from "../utils/fileStorage";
 import jwt from "jsonwebtoken";
-
-interface User {
-  id: string;
-  username: string;
-  password: string;
-  createdAt: string;
-}
+import { User, UserRole } from "../types/auth";
 
 interface Data {
   users: User[];
@@ -37,7 +31,7 @@ authRoutes.post("/register", async (req, res) => {
       id: Date.now().toString(),
       username,
       password: await bcrypt.hash(password, 10),
-      createdAt: new Date().toISOString(),
+      role: UserRole.USER, // 默认为普通用户
     };
 
     // 保存用户数据
