@@ -68,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       console.log("开始登录...");
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           username,
           password,
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       console.log("开始注册...");
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
         data
       );
 

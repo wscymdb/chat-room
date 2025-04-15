@@ -14,7 +14,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // 允许所有来源
+    origin: ["http://110.40.153.4", "http://localhost:5173"],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -24,7 +24,7 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(
   cors({
-    origin: "*", // 允许所有来源
+    origin: ["http://110.40.153.4", "http://localhost:5173"],
     credentials: true,
   })
 );

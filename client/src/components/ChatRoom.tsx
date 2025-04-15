@@ -21,7 +21,7 @@ const ChatRoom: React.FC = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/messages`
+          `${import.meta.env.VITE_API_URL}/api/messages`
         );
         setMessages(response.data);
       } catch (error) {
@@ -37,7 +37,7 @@ const ChatRoom: React.FC = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/messages`,
+        `${import.meta.env.VITE_API_URL}/api/messages`,
         {
           content: newMessage,
           senderId: user.id,
