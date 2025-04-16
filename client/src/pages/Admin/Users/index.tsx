@@ -203,7 +203,11 @@ const UsersPage: React.FC = () => {
         dataSource={users}
         rowKey="id"
         loading={loading}
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          size: "small",
+          showTotal: (total) => `共 ${total} 条`,
+          hideOnSinglePage: true,
+        }}
       />
 
       <Modal

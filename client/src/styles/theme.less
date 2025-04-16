@@ -1,0 +1,603 @@
+// Light theme variables
+:root[data-theme="light"] {
+  --bg-color: #ffffff;
+  --text-color: #1b1b1b;
+  --border-color: #e5e7eb;
+  --hover-color: #f3f4f6;
+  --primary-color: #0066cc;
+  --active-color: #4f46e5;
+  --secondary-color: #6b7280;
+  --header-bg: #ffffff;
+  --sider-bg: #ffffff;
+  --content-bg: #f0f2f5;
+  --card-bg: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --placeholder-color: #9ca3af;
+  --message-bubble-bg: var(--active-color);
+  --message-bubble-self: var(--active-color);
+  --message-bubble-text: var(--text-color);
+  --message-bubble-self-text: #ffffff;
+  --message-bubble-border: var(--border-color);
+}
+
+// Dark theme variables
+:root[data-theme="dark"] {
+  --bg-color: #010101;
+  --text-color: #ffffff;
+  --border-color: #2b2b2b;
+  --hover-color: #2b2b2b;
+  --primary-color: #1890ff;
+  --active-color: #4f46e5;
+  --secondary-color: #939393;
+  --header-bg: #141414;
+  --sider-bg: #141414;
+  --content-bg: #010101;
+  --card-bg: #141414;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --placeholder-color: #666666;
+  --message-bubble-bg: var(--active-color);
+  --message-bubble-self: #4f46e5;
+  --message-bubble-text: var(--text-color);
+  --message-bubble-self-text: #ffffff;
+}
+
+// Common styles
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+// Override Ant Design theme
+.ant-layout {
+  background: var(--bg-color) !important;
+}
+
+.ant-layout-header {
+  background: var(--header-bg) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ant-layout-sider {
+  background: var(--sider-bg) !important;
+  border-right: 1px solid var(--border-color);
+}
+
+.ant-layout-content {
+  background: var(--content-bg) !important;
+}
+
+.ant-card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-color);
+}
+
+.ant-table {
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+
+  .ant-table-placeholder {
+    background: var(--card-bg) !important;
+
+    .ant-table-cell {
+      .ant-empty {
+        .ant-empty-image {
+          svg {
+            path {
+              fill: var(--border-color) !important;
+            }
+          }
+        }
+        .ant-empty-description {
+          color: var(--secondary-color) !important;
+        }
+      }
+    }
+  }
+}
+
+.ant-table-thead > tr > th {
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.ant-table-tbody > tr > td {
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--hover-color) !important;
+}
+
+.ant-input {
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.ant-input:hover,
+.ant-input:focus {
+  border-color: var(--primary-color) !important;
+}
+
+.ant-btn {
+  border-color: var(--border-color) !important;
+}
+
+.ant-btn-text {
+  color: var(--text-color) !important;
+}
+
+.ant-btn-text:hover {
+  background: var(--hover-color) !important;
+}
+
+.ant-dropdown-menu {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-color);
+}
+
+.ant-dropdown-menu-item {
+  color: var(--text-color) !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background: var(--hover-color) !important;
+}
+
+.ant-dropdown-menu-item-selected {
+  background: var(--hover-color) !important;
+  color: var(--active-color) !important;
+}
+
+// 聊天室特定样式
+.chat-room {
+  .header {
+    background: var(--header-bg) !important;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color) !important;
+    height: 64px;
+
+    .ant-typography,
+    span {
+      color: var(--text-color) !important;
+    }
+  }
+
+  .sider {
+    background: var(--sider-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+    padding: 16px;
+    width: 240px;
+
+    .ant-input-search {
+      .ant-input {
+        background: var(--card-bg) !important;
+      }
+    }
+
+    .online-users-title {
+      color: var(--text-color) !important;
+    }
+
+    .ant-list-item {
+      color: var(--text-color) !important;
+
+      .ant-typography,
+      span {
+        color: var(--text-color) !important;
+      }
+    }
+  }
+
+  .message-item {
+    margin-bottom: 16px;
+  }
+
+  .message-content {
+    color: var(--text-color) !important;
+  }
+
+  .message-username {
+    color: var(--primary-color) !important;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .ant-input-affix-wrapper {
+    background: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+
+    .ant-input {
+      background: transparent !important;
+      color: var(--text-color) !important;
+    }
+
+    &:hover,
+    &:focus {
+      border-color: var(--primary-color) !important;
+    }
+  }
+
+  // 添加消息输入框的样式
+  .ant-input-textarea {
+    background: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+
+    .ant-input {
+      background: var(--card-bg) !important;
+      color: var(--text-color) !important;
+    }
+
+    &:hover,
+    &-focused {
+      border-color: var(--primary-color) !important;
+    }
+  }
+
+  .content {
+    .input-container {
+      border: 1px solid var(--border-color) !important;
+      background: var(--card-bg) !important;
+      box-shadow: 0 1px 2px var(--shadow-color) !important;
+
+      &:hover {
+        border-color: var(--primary-color) !important;
+      }
+
+      &:focus-within {
+        border-color: var(--active-color) !important;
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1) !important;
+      }
+
+      form {
+        .ant-input {
+          background: var(--card-bg) !important;
+          color: var(--text-color) !important;
+          border-color: var(--border-color) !important;
+        }
+
+        .ant-input-textarea {
+          background: var(--card-bg) !important;
+
+          textarea {
+            background: var(--card-bg) !important;
+            color: var(--text-color) !important;
+
+            &::placeholder {
+              color: var(--placeholder-color) !important;
+            }
+          }
+        }
+
+        .ant-btn {
+          &[disabled] {
+            background: var(--hover-color) !important;
+            border-color: var(--border-color) !important;
+            color: var(--secondary-color) !important;
+            opacity: 0.6;
+          }
+
+          &:not([disabled]) {
+            background: var(--active-color) !important;
+            border-color: var(--active-color) !important;
+            color: #ffffff !important;
+
+            &:hover {
+              background: var(--active-color) !important;
+              opacity: 0.85;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 管理页面特定样式
+.admin-layout {
+  .ant-layout-header {
+    .ant-typography,
+    span {
+      color: var(--text-color) !important;
+    }
+  }
+
+  .ant-menu {
+    background: var(--sider-bg) !important;
+    color: var(--text-color) !important;
+    border-right: none !important;
+  }
+
+  .ant-menu-item {
+    color: var(--text-color) !important;
+
+    &:hover {
+      color: var(--primary-color) !important;
+    }
+  }
+
+  .ant-menu-item:hover {
+    background: var(--hover-color) !important;
+  }
+
+  .ant-menu-item-selected {
+    background: var(--hover-color) !important;
+    color: var(--active-color) !important;
+  }
+
+  .ant-menu-item-selected::after {
+    border-right-color: var(--active-color) !important;
+  }
+
+  .ant-layout-sider-trigger {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-right: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+  }
+
+  // 消息管理页面样式
+  .messages-page {
+    .ant-typography {
+      color: var(--text-color) !important;
+    }
+
+    // 搜索框和选择框样式
+    .ant-input-wrapper {
+      .ant-input-group-addon {
+        background: var(--card-bg) !important;
+        border-color: var(--border-color) !important;
+        .ant-input-search-button {
+          background: var(--card-bg) !important;
+          border-color: var(--border-color) !important;
+          color: var(--text-color) !important;
+          &:hover {
+            background: var(--hover-color) !important;
+            border-color: var(--primary-color) !important;
+            color: var(--primary-color) !important;
+          }
+        }
+      }
+
+      .ant-input-affix-wrapper {
+        background: var(--card-bg) !important;
+        border-color: var(--border-color) !important;
+
+        input {
+          background: var(--card-bg) !important;
+        }
+
+        .ant-input-prefix,
+        .ant-input-suffix {
+          color: var(--text-color) !important;
+        }
+      }
+    }
+
+    .ant-input,
+    .ant-select-selector,
+    .ant-select-selection-search-input {
+      background: var(--card-bg) !important;
+      color: var(--text-color) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    .ant-select-dropdown {
+      background: var(--card-bg) !important;
+      border: 1px solid var(--border-color) !important;
+
+      .ant-select-item {
+        color: var(--text-color) !important;
+
+        &:hover {
+          background: var(--hover-color) !important;
+        }
+
+        &-selected {
+          background: var(--hover-color) !important;
+          color: var(--primary-color) !important;
+        }
+      }
+    }
+
+    .ant-select-arrow {
+      color: var(--text-color) !important;
+    }
+
+    .ant-table {
+      .ant-table-cell {
+        color: var(--text-color) !important;
+      }
+    }
+
+    // 分页器样式
+    .ant-pagination {
+      color: var(--text-color) !important;
+
+      .ant-pagination-total-text {
+        color: var(--text-color) !important;
+      }
+
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        button {
+          background: var(--card-bg) !important;
+          color: var(--text-color) !important;
+          border-color: var(--border-color) !important;
+
+          &:hover {
+            border-color: var(--primary-color) !important;
+            color: var(--primary-color) !important;
+          }
+        }
+      }
+
+      .ant-pagination-item-link,
+      .ant-pagination-item {
+        background: var(--card-bg) !important;
+        color: var(--text-color) !important;
+        border-color: var(--border-color) !important;
+        a {
+          color: var(--text-color) !important;
+        }
+
+        &:hover {
+          border-color: var(--primary-color) !important;
+          a {
+            color: var(--primary-color) !important;
+          }
+        }
+      }
+
+      .ant-pagination-item-active {
+        border-color: var(--active-color) !important;
+        a {
+          color: var(--active-color) !important;
+        }
+      }
+    }
+
+    .stat-card {
+      background: var(--card-bg) !important;
+      border-color: var(--border-color) !important;
+
+      .ant-card-head {
+        background: var(--card-bg) !important;
+        border-color: var(--border-color) !important;
+      }
+
+      .ant-card-head-title {
+        color: var(--text-color) !important;
+      }
+
+      .ant-card-body {
+        background: var(--card-bg) !important;
+      }
+    }
+  }
+}
+
+// 全局输入框placeholder样式
+.ant-input {
+  &::placeholder {
+    color: var(--placeholder-color) !important;
+  }
+}
+
+.ant-input-affix-wrapper {
+  input::placeholder {
+    color: var(--placeholder-color) !important;
+  }
+}
+
+.ant-select {
+  &-selection-placeholder {
+    color: var(--placeholder-color) !important;
+  }
+}
+
+// 全局输入框样式
+.ant-input-affix-wrapper {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+
+  input {
+    background: var(--card-bg) !important;
+  }
+
+  .ant-input-prefix,
+  .ant-input-suffix {
+    color: var(--text-color) !important;
+  }
+}
+
+// 全局分页器样式
+.ant-pagination {
+  color: var(--text-color) !important;
+
+  .ant-pagination-total-text {
+    color: var(--text-color) !important;
+  }
+
+  .ant-pagination-prev,
+  .ant-pagination-next {
+    button {
+      background: var(--card-bg) !important;
+      color: var(--text-color) !important;
+      border-color: var(--border-color) !important;
+
+      &:hover {
+        border-color: var(--primary-color) !important;
+        color: var(--primary-color) !important;
+      }
+    }
+  }
+
+  .ant-pagination-item-link,
+  .ant-pagination-item {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+    a {
+      color: var(--text-color) !important;
+    }
+
+    &:hover {
+      border-color: var(--primary-color) !important;
+      a {
+        color: var(--primary-color) !important;
+      }
+    }
+  }
+
+  .ant-pagination-item-active {
+    border-color: var(--active-color) !important;
+    a {
+      color: var(--active-color) !important;
+    }
+  }
+}
+
+// 全局输入框样式
+.ant-input-textarea {
+  &.ant-input-textarea-dark {
+    background: var(--card-bg) !important;
+
+    .ant-input {
+      background: var(--card-bg) !important;
+      color: var(--text-color) !important;
+      border-color: var(--border-color) !important;
+
+      &::placeholder {
+        color: var(--placeholder-color) !important;
+      }
+    }
+  }
+}
+
+.ant-input-affix-wrapper {
+  &.ant-input-affix-wrapper-dark {
+    background: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+
+    .ant-input {
+      background: transparent !important;
+      color: var(--text-color) !important;
+
+      &::placeholder {
+        color: var(--placeholder-color) !important;
+      }
+    }
+
+    .ant-input-prefix,
+    .ant-input-suffix {
+      color: var(--text-color) !important;
+    }
+  }
+}

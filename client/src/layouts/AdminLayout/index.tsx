@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import ThemeSwitch from "../../components/ThemeSwitch";
 import "./index.less";
 
 const { Header, Sider, Content } = Layout;
@@ -57,6 +58,7 @@ const AdminLayout: React.FC = () => {
           <div className="logo">聊天室管理系统</div>
         </div>
         <div className="user-info">
+          <ThemeSwitch />
           <span>欢迎，{user?.username}</span>
           <Button
             type="text"

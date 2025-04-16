@@ -21,6 +21,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../../types/auth";
+import ThemeSwitch from "../../components/ThemeSwitch";
+import Message from "../../components/Message";
 import "./index.less";
 
 const { Header, Content, Sider } = Layout;
@@ -119,6 +121,7 @@ const ChatRoomPage: React.FC = () => {
             <Text>{user?.username}</Text>
           </Space>
           <Space>
+            <ThemeSwitch />
             {(user?.role === UserRole.ADMIN ||
               user?.role === UserRole.SUPER_ADMIN) && (
               <Button
@@ -155,37 +158,12 @@ const ChatRoomPage: React.FC = () => {
                       {formatDate(message.timestamp)}
                     </div>
                   )}
-                  <div
-                    className={`message-item ${
-                      isCurrentUser ? "message-item-right" : "message-item-left"
-                    }`}
-                  >
-                    {!isCurrentUser && (
-                      <Avatar
-                        icon={<UserOutlined />}
-                        className="message-avatar"
-                      />
-                    )}
-                    <div
-                      className={`message-content ${
-                        isCurrentUser
-                          ? "message-content-right"
-                          : "message-content-left"
-                      }`}
-                    >
-                      {!isCurrentUser && (
-                        <div className="message-username">
-                          {message.username}
-                        </div>
-                      )}
-                      <div className="message-bubble">
-                        {message.content}
-                        <div className="message-time">
-                          {formatMessageTime(message.timestamp)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <Message
+                    content={message.content}
+                    timestamp={message.timestamp}
+                    username={message.username}
+                    isSelf={isCurrentUser}
+                  />
                 </div>
               );
             })}
@@ -198,7 +176,7 @@ const ChatRoomPage: React.FC = () => {
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="输入消息..."
-                autoSize={{ minRows: 2, maxRows: 4 }}
+                // autoSize={{ minRows: 2, maxRows: 2 }}
               />
               <Button
                 type="primary"

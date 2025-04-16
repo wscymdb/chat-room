@@ -196,6 +196,7 @@ const MessagesPage: React.FC = () => {
               pagination={{
                 size: "small",
                 showTotal: (total) => `共 ${total} 条`,
+                hideOnSinglePage: true,
               }}
             />
           </Card>
