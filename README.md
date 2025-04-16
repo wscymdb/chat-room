@@ -1,114 +1,161 @@
 # 实时聊天室应用
 
-> 🚀 这是一个使用 Cursor AI 辅助开发的实时聊天室应用
+一个基于 React + Node.js 的现代化实时聊天应用，支持多用户聊天、权限管理和主题切换。
 
-## 项目简介
+## 功能特点
 
-这是一个基于 React + TypeScript + Socket.IO 的实时聊天室应用，具有以下特点：
+### 基础功能 (v1.0.0)
 
-- 用户注册和登录
 - 实时消息发送和接收
 - 在线用户列表
+- 用户上线/下线提醒
+- 消息时间戳
 - 消息历史记录
+- 用户输入状态提示
+- 消息搜索功能
+
+### 权限系统 (v2.0.0)
+
+- 用户角色管理（超级管理员、管理员、普通用户）
+- 用户管理界面
+  - 创建/编辑/删除用户
+  - 角色分配
+- 消息管理
+  - 消息审核
+  - 消息删除
+- 权限控制
+  - 基于角色的访问控制
+  - 操作权限管理
+
+### 主题系统 (v3.0.0)
+
+- 明暗主题切换
+- 自定义主题色（紫色主题）
 - 响应式设计
+- 现代化 UI 界面
+- 消息气泡样式优化
+- 组件主题适配
 
 ## 技术栈
 
-- **前端**：
+### 前端
 
-  - React 18
-  - TypeScript
-  - Material-UI
-  - Socket.IO Client
-  - Vite
+- React 18
+- TypeScript
+- Ant Design
+- Socket.IO Client
+- Less
+- React Router
+- Context API
 
-- **后端**：
-  - Node.js
-  - Express
-  - Socket.IO
-  - TypeScript
+### 后端
+
+- Node.js
+- Express
+- Socket.IO
+- MongoDB
+- JWT 认证
 
 ## 开发环境设置
 
-1. 克隆仓库：
+1. 克隆仓库
 
 ```bash
-git clone [your-repository-url]
+git clone [repository-url]
 cd chat-room
 ```
 
-2. 安装依赖：
+2. 安装依赖
 
 ```bash
-# 安装客户端依赖
+# 安装前端依赖
 cd client
 npm install
 
-# 安装服务器依赖
+# 安装后端依赖
 cd ../server
 npm install
 ```
 
-3. 配置环境变量：
-
-- 复制 `.env.example` 文件并重命名为 `.env`
-- 根据你的环境修改配置
-
-4. 启动开发服务器：
+3. 环境变量配置
 
 ```bash
-# 启动客户端
+# 在 client 目录下创建 .env 文件
+VITE_API_URL=http://localhost:3000
+
+# 在 server 目录下创建 .env 文件
+PORT=3000
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+```
+
+4. 启动应用
+
+```bash
+# 启动前端开发服务器
 cd client
 npm run dev
 
-# 启动服务器
+# 启动后端服务器
 cd ../server
 npm run dev
 ```
 
-## 生产环境部署
+## 版本历史
 
-1. 构建前端：
+### v1.0.0 - 基础功能开发
 
-```bash
-cd client
-npm run build
-```
+- 实现基本的聊天功能
+- 用户认证系统
+- 实时消息传递
+- 在线用户管理
+- 基础 UI 界面
 
-2. 部署服务器：
+### v2.0.0 - 权限系统开发
 
-```bash
-cd server
-npm run build
-npm start
-```
+- 引入用户角色系统
+- 添加管理员控制面板
+- 用户管理功能
+- 消息管理功能
+- 权限控制系统
 
-## 项目结构
+### v3.0.0 - 主题系统
 
-```
-chat-room/
-├── client/                 # 前端代码
-│   ├── src/
-│   │   ├── components/     # React 组件
-│   │   ├── contexts/       # React Context
-│   │   └── ...
-│   └── ...
-└── server/                 # 后端代码
-    ├── src/
-    │   ├── controllers/    # 控制器
-    │   ├── routes/         # 路由
-    │   ├── socket/         # Socket.IO 处理
-    │   └── ...
-    └── ...
-```
+- 添加暗色主题支持
+- 引入主题色系统
+- UI 组件主题适配
+- 消息气泡样式优化
+- 响应式设计优化
 
-## 贡献
+## 使用说明
 
-欢迎提交 Issue 和 Pull Request！
+### 用户角色
+
+- 超级管理员：拥有所有权限，可以管理其他管理员
+- 管理员：可以管理普通用户和消息
+- 普通用户：基本的聊天功能
+
+### 主题切换
+
+- 点击右上角的主题切换按钮可以在明暗主题间切换
+- 系统会自动记住用户的主题偏好
+
+### 消息管理
+
+- 管理员可以在管理面板中查看和删除消息
+- 支持消息搜索和按用户筛选
+
+## 贡献指南
+
+1. Fork 项目
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交改动 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 创建 Pull Request
 
 ## 许可证
 
-MIT
+MIT License - 详见 LICENSE 文件
 
 ---
 
