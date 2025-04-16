@@ -10,7 +10,6 @@ import {
   Badge,
   Flex,
   Mentions,
-  message,
 } from "antd";
 import {
   SendOutlined,
@@ -166,7 +165,7 @@ const ChatRoomPage: React.FC = () => {
     setShowBotMention(value.toLowerCase().includes("@"));
   };
 
-  const handleSelect = (option: any, prefix: string) => {
+  const handleSelect = (option: any) => {
     setNewMessage("@" + option.value + " ");
     setShowBotMention(false);
   };

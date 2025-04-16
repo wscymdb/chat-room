@@ -10,7 +10,6 @@ import {
   Select,
   Form,
   Modal,
-  Popconfirm,
 } from "antd";
 import {
   MessageOutlined,
@@ -41,7 +40,7 @@ interface UsernameOption {
 }
 
 const MessagesPage: React.FC = () => {
-  const { user, hasPermission } = useAuth();
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [usernames, setUsernames] = useState<UsernameOption[]>([]);

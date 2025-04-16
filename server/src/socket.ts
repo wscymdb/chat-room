@@ -21,6 +21,8 @@ export const setupSocket = (io: Server) => {
   io.on("connection", async (socket: Socket) => {
     const { userId, username, avatar } = socket.handshake.query;
 
+    console.log(`用户已连接: ${username}，ID: ${userId}`);
+
     if (!userId || !username) {
       socket.disconnect();
       return;
@@ -37,12 +39,10 @@ export const setupSocket = (io: Server) => {
     });
 
     // 添加断开连接处理
-    socket.on("disconnect", (reason) => {
+    socket.on("disconnect", (reason: string) => {
       console.log(`Socket disconnected: ${reason}`);
-      if (reason === "io server disconnect") {
-        // 服务器主动断开连接，尝试重连
-        socket.connect();
-      }
+      // 不再尝试自动重连，避免类型错误
+      console.log(`断开连接原因: ${reason}`);
     });
 
     // 读取数据
