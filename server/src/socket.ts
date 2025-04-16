@@ -14,6 +14,7 @@ interface Message {
   content: string;
   timestamp: string;
   avatar: string;
+  type: "user" | "bot";
 }
 
 export const setupSocket = (io: Server) => {
@@ -33,6 +34,7 @@ export const setupSocket = (io: Server) => {
       ...msg,
       timestamp: new Date(msg.timestamp).getTime(),
       avatar: msg.avatar || "",
+      type: msg.type || "user",
     }));
     socket.emit("messages", formattedMessages);
 
@@ -61,19 +63,31 @@ export const setupSocket = (io: Server) => {
     // 处理新消息
     socket.on(
       "message",
-      async (messageData: Omit<Message, "id" | "timestamp">) => {
-        const newMessage = {
-          id: Date.now().toString(),
-          ...messageData,
-          timestamp: new Date().toISOString(),
-        };
+      async (
+        messageData: Omit<Message, "id" | "timestamp" | "type">,
+        callback: (response: { success: boolean }) => void
+      ) => {
+        try {
+          const newMessage = {
+            id: Date.now().toString(),
+            ...messageData,
+            timestamp: new Date().toISOString(),
+            type: messageData.content.startsWith("@bot") ? "bot" : "user",
+          };
 
-        // 保存消息
-        data.messages.push(newMessage);
-        await writeData(data);
+          // 保存消息
+          data.messages.push(newMessage);
+          await writeData(data);
 
-        // 广播消息
-        io.emit("message", newMessage);
+          // 广播消息
+          io.emit("message", newMessage);
+
+          // 发送成功回调
+          callback({ success: true });
+        } catch (error) {
+          console.error("消息处理错误:", error);
+          callback({ success: false });
+        }
       }
     );
 

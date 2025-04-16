@@ -11,7 +11,6 @@ import {
   Flex,
   Mentions,
 } from "antd";
-import type { MentionsProps } from "antd/es/mentions";
 import {
   SendOutlined,
   LogoutOutlined,
@@ -30,19 +29,16 @@ import axios from "axios";
 import "./index.less";
 
 const { Header, Content, Sider } = Layout;
-const { TextArea } = Input;
 const { Text } = Typography;
 
 const ChatRoomPage: React.FC = () => {
   const { user, logout } = useAuth();
-  const { messages, onlineUsers, sendMessage } = useSocket();
+  const { messages, onlineUsers, sendMessage, socket } = useSocket();
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showBotMention, setShowBotMention] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  console.log(user?.role);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -66,7 +62,9 @@ const ChatRoomPage: React.FC = () => {
 
   const handleBotMessage = async (message: string) => {
     try {
-      console.log("发送机器人请求:", message);
+      // 先发送用户的消息
+      sendMessage(message);
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/bot`,
         {
@@ -79,17 +77,41 @@ const ChatRoomPage: React.FC = () => {
         }
       );
 
-      console.log("机器人响应:", response.data);
       const botResponse =
         response.data.message || "抱歉，我现在无法回答这个问题。";
-      sendMessage(`@bot ${botResponse}`);
+
+      // 发送机器人回复，使用特殊的消息格式
+      if (socket && user) {
+        const botMessage = {
+          content: `@bot ${botResponse}`,
+          userId: "bot", // 使用特殊的bot用户ID
+          username: "AI助手",
+          type: "bot" as const,
+        };
+        socket.emit("message", botMessage);
+      }
     } catch (error) {
-      console.error("机器人响应错误:", error);
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.error || error.message;
-        sendMessage(`@bot 抱歉，发生了错误：${errorMessage}`);
+        if (socket && user) {
+          const errorBotMessage = {
+            content: `@bot 抱歉，发生了错误：${errorMessage}`,
+            userId: "bot",
+            username: "AI助手",
+            type: "bot" as const,
+          };
+          socket.emit("message", errorBotMessage);
+        }
       } else {
-        sendMessage("@bot 抱歉，机器人暂时无法响应，请稍后再试。");
+        if (socket && user) {
+          const errorBotMessage = {
+            content: "@bot 抱歉，机器人暂时无法响应，请稍后再试。",
+            userId: "bot",
+            username: "AI助手",
+            type: "bot" as const,
+          };
+          socket.emit("message", errorBotMessage);
+        }
       }
     }
   };
@@ -199,7 +221,6 @@ const ChatRoomPage: React.FC = () => {
         <Content className="content">
           <div className="messages-container">
             {messages.map((message, index) => {
-              const isCurrentUser = message.userId === user?.id;
               const showDate =
                 index === 0 ||
                 formatDate(message.timestamp) !==
@@ -216,9 +237,8 @@ const ChatRoomPage: React.FC = () => {
                     content={message.content}
                     timestamp={message.timestamp}
                     username={message.username}
-                    isSelf={
-                      isCurrentUser && !message.content.startsWith("@bot")
-                    }
+                    isSelf={message.userId === user?.id}
+                    type={message.type}
                   />
                 </div>
               );

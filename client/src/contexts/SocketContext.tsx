@@ -8,6 +8,7 @@ interface Message {
   userId: string;
   username: string;
   timestamp: number;
+  type: "user" | "bot";
 }
 
 interface User {
@@ -20,6 +21,7 @@ interface SocketContextType {
   messages: Message[];
   onlineUsers: User[];
   sendMessage: (content: string) => void;
+  socket: Socket | null;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -91,12 +93,16 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const sendMessage = (content: string) => {
     if (socket && user) {
-      const message: Omit<Message, "id" | "timestamp"> = {
+      const message: Omit<Message, "id" | "timestamp" | "type"> = {
         content,
         userId: user.id,
         username: user.username,
       };
-      socket.emit("message", message);
+      socket.emit("message", message, (response: { success: boolean }) => {
+        if (!response.success) {
+          console.error("消息发送失败");
+        }
+      });
     }
   };
 
@@ -104,6 +110,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     messages,
     onlineUsers,
     sendMessage,
+    socket,
   };
 
   return (
