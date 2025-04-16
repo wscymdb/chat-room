@@ -35,6 +35,10 @@
         background: var(--message-bubble-self);
         color: #fff;
         border: none;
+
+        .message-time {
+          color: rgba(255, 255, 255, 0.8);
+        }
       }
     }
 
@@ -45,6 +49,10 @@
         background: var(--card-bg);
         color: var(--text-color);
         border: 1px solid var(--border-color);
+
+        .message-time {
+          color: var(--message-time-color, rgba(0, 0, 0, 0.45));
+        }
       }
     }
 
@@ -52,14 +60,14 @@
       align-items: flex-start;
 
       .message-bubble {
-        background: #f0f7ff;
+        background: var(--bot-bubble-bg, #f0f7ff);
         color: var(--text-color);
-        border: 1px solid #d9e6ff;
-      }
-    }
+        border: 1px solid var(--bot-bubble-border, #d9e6ff);
 
-    .message-time {
-      color: rgba(255, 255, 255, 0.8);
+        .message-time {
+          color: var(--message-time-color, rgba(0, 0, 0, 0.45));
+        }
+      }
     }
 
     .message-username {
@@ -80,6 +88,189 @@
         font-size: 11px;
         margin-top: 4px;
         text-align: right;
+      }
+
+      pre {
+        background-color: #f0f0f0;
+        padding: 8px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+
+      code {
+        background-color: #f0f0f0;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9em;
+      }
+
+      .inline-code {
+        background-color: #f0f0f0;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 0.9em;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      ul,
+      ol {
+        padding-left: 20px;
+        margin: 8px 0;
+      }
+
+      blockquote {
+        border-left: 4px solid #d9d9d9;
+        padding-left: 12px;
+        margin: 8px 0;
+        color: #666;
+      }
+    }
+  }
+}
+
+.code-block-wrapper {
+  position: relative;
+  margin: 16px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  .code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a45;
+    padding: 8px 16px;
+    border-bottom: 1px solid #3e4451;
+
+    .code-language {
+      color: #d7dae0;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .copy-icon {
+      color: #abb2bf;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #ffffff;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  /* 调整行号列的样式 */
+  .linenumber {
+    min-width: 2.5em;
+    color: #636e7b !important;
+    border-right: 1px solid #4b5263;
+    padding-right: 8px;
+    text-align: right;
+  }
+
+  /* 微调代码块的每行间距 */
+  pre {
+    margin: 0 !important;
+
+    span {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+        monospace !important;
+    }
+  }
+}
+
+.message-bot-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+
+  .copy-message-icon {
+    color: #8c8c8c;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #1890ff;
+      transform: scale(1.1);
+    }
+  }
+}
+
+.message-bot-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.message-tokens {
+  font-size: 12px;
+  color: #999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .token-detail {
+    margin-top: 2px;
+    color: #bbb;
+    font-size: 11px;
+  }
+}
+
+.thinking-message {
+  font-size: 14px;
+  color: #666;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #1890ff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    margin-right: 8px;
+    animation: thinking-spin 1s linear infinite;
+  }
+}
+
+@keyframes thinking-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 添加暗黑模式样式 */
+html[data-theme="dark"] {
+  .message-item {
+    .message-content {
+      &.message-content-left,
+      &.message-content-bot {
+        .message-bubble {
+          .message-time {
+            color: rgba(255, 255, 255, 0.65);
+          }
+        }
       }
     }
   }

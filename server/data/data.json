@@ -21,164 +21,81 @@
   ],
   "messages": [
     {
-      "id": "1744805850223",
-      "content": "@bot 你好",
+      "id": "1744807260499",
+      "content": "n你",
       "userId": "1744618385443",
       "username": "chh",
-      "timestamp": "2025-04-16T12:17:30.223Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744805855206",
-      "content": "@bot 你好呀！😊 有什么可以帮你的吗？",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:17:35.206Z"
-    },
-    {
-      "id": "1744805946824",
-      "content": "@bot 你是谁啊",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:19:06.824Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744805953557",
-      "content": "@bot 我是DeepSeek Chat，一个由深度求索公司（DeepSeek）开发的智能AI助手！😊 我可以帮你解答各种问题，比如学习、工作、生活小技巧，或者陪你聊天解闷。有什么想问的，尽管告诉我吧！✨",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:19:13.557Z"
-    },
-    {
-      "id": "1744805990391",
-      "content": "112",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:19:50.391Z",
+      "timestamp": "2025-04-16T12:41:00.499Z",
       "type": "user"
     },
     {
-      "id": "1744805994971",
-      "content": "@bot 你好",
+      "id": "1744807271045",
+      "content": "@bot 你好啊 推荐几部电影",
       "userId": "1744618385443",
       "username": "chh",
-      "timestamp": "2025-04-16T12:19:54.971Z",
+      "timestamp": "2025-04-16T12:41:11.045Z",
       "type": "bot"
     },
     {
-      "id": "1744805998737",
-      "content": "@你是谁",
+      "id": "1744807343933",
+      "content": "@bot 推荐几部电影\n",
       "userId": "1744618385443",
       "username": "chh",
-      "timestamp": "2025-04-16T12:19:58.737Z",
-      "type": "user"
-    },
-    {
-      "id": "1744805999424",
-      "content": "@bot 你好呀！😊 有什么可以帮你的吗？",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:19:59.424Z"
-    },
-    {
-      "id": "1744806020606",
-      "content": "@bot 哈哈哈",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:20:20.606Z",
+      "timestamp": "2025-04-16T12:42:23.933Z",
       "type": "bot"
     },
     {
-      "id": "1744806027092",
-      "content": "@bot 哈哈，看来你今天心情不错呀～有什么开心的事想分享吗？还是单纯想放飞一下笑声？😄 （悄悄说，本AI虽然不会笑，但可以陪你一起“哈哈哈”到天亮哦～）",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:20:27.092Z"
-    },
-    {
-      "id": "1744806172386",
-      "content": "@bot 哦哦哦",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:22:52.386Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744806178539",
-      "content": "@bot 你好呀！😊 看起来你在思考什么，或者想继续聊点什么？如果有问题、想法，或者只是想随便聊聊，我都在这里哦～ 有什么可以帮你的吗？✨",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:22:58.540Z"
-    },
-    {
-      "id": "1744806231535",
-      "content": "@bot 呢",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:23:51.535Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744806239532",
-      "content": "@bot 你好！😊 你是想问关于“@bot”的用法，还是需要其他帮助呢？  \n\n如果是想召唤或提及机器人（比如在群聊或某些平台），通常直接输入“@bot”加上你的问题或指令即可。不同平台的机器人可能有不同的触发方式，具体可以查看相关说明哦～  \n\n需要我帮你做点什么吗？比如查资料、解答问题，或者聊天？随时告诉我！✨",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:23:59.532Z"
-    },
-    {
-      "id": "1744806258521",
-      "content": "@bot 你是谁啊",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:24:18.521Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744806268153",
-      "content": "@bot 我是DeepSeek Chat，由深度求索公司创造的AI助手！🤖✨ 我的使命是帮助你解答问题、提供信息、陪你聊天，甚至帮你处理各种文本和文件。无论是学习、工作，还是日常生活中的小困惑，都可以来找我聊聊！😊  \n\n有什么我可以帮你的吗？",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:24:28.153Z"
-    },
-    {
-      "id": "1744806371603",
-      "content": "@bot 你会什么呢",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:26:11.603Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744806390234",
-      "content": "@bot 我能做的事情可多了！😊 无论是学习、工作还是日常生活，我都可以帮你解决各种问题。以下是我的一些主要功能：  \n\n### 📚 **学习与知识**  \n- 解答各类学科问题（数学、物理、历史、文学等）  \n- 提供论文写作思路、润色修改  \n- 翻译多种语言（中英日韩等）  \n- 推荐书籍、学习方法和考试技巧  \n\n### 💼 **办公与效率**  \n- 撰写/优化简历、求职信  \n- 生成商业计划、市场分析  \n- 处理Excel数据、制作PPT大纲  \n- 编写邮件、公文、合同等  \n\n### 💡 **编程与技术**  \n- 代码编写、调试（Python、Java、C++等）  \n- 算法讲解、LeetCode题目解析  \n- 自动化脚本、数据处理  \n- 解释技术概念（AI、区块链、云计算等）  \n\n### 🎨 **创意与娱乐**  \n- 写小说、诗歌、广告文案  \n- 生成故事、角色设定  \n- 推荐电影、音乐、游戏  \n- 提供旅行攻略、美食推荐  \n\n### 🗣 **生活与社交**  \n- 心理疏导、情感建议  \n- 健身计划、饮食搭配  \n- 语言学习（口语练习、语法纠正）  \n- 节日祝福、聊天陪伴  \n\n如果你有任何具体需求，尽管问我！我会尽力帮你解决～ 😃 你今天想了解什么呢？",
-      "userId": "bot",
-      "username": "AI助手",
-      "type": "bot",
-      "timestamp": "2025-04-16T12:26:30.234Z"
-    },
-    {
-      "id": "1744806464134",
-      "content": "@bot 推荐一首音乐吧",
-      "userId": "1744618385443",
-      "username": "chh",
-      "timestamp": "2025-04-16T12:27:44.134Z",
-      "type": "bot"
-    },
-    {
-      "id": "1744806484452",
-      "content": "当然！根据不同的心情和场景，为你推荐几首风格各异的音乐，希望有一首能触动你：\n\n1. **治愈系**  \n   🎵 **《Blinding Lights》- The Weeknd**  \n   复古合成器旋律+强烈节奏感，适合夜晚独自驾驶或需要能量充电时听。\n\n2. **安静思考**  \n   🎵 **《Gymnopédie No.1》- Erik Satie**  \n   古典钢琴的极简之美，像一杯温茶般舒缓焦虑，适合阅读或放空。\n\n3. **夏日氛围**  \n   🎵 **《Sunflower》- Post Malone & Swae Lee**  \n   轻快的流行旋律，瞬间带来阳光沙滩的松弛感。\n\n4. **中文诗意**  \n   🎵 **《凄美地》- 郭顶**  \n   迷幻摇滚与诗意的歌词，适合雨天单曲循环。\n\n5. **电影感史诗**  \n   🎵 **《Cornfield Chase》- Hans Zimmer**  \n   （《星际穿越》配乐）管风琴与宇宙的共鸣，宏大又孤独。\n\n**小互动**：你最近在寻找某种特定风格的音乐吗？或是需要适合工作/睡眠的BGM？可以告诉我，再帮你细化推荐哦！ 🌟",
+      "id": "1744807385291",
+      "content": "当然可以！以下是一些不同风格和类型的电影推荐，涵盖经典、高分和近期热门作品，供你参考：\n\n---\n\n### **🎬 经典必看**\n1. **《肖申克的救赎》**（1994）  \n   - 类型：剧情/励志  \n   - 关键词：希望、自由、人性光辉，IMDb常年排名第一的神作。\n\n2. **《教父》**（1972）  \n   - 类型：黑帮/史诗  \n   - 关键词：家族、权力、马龙·白兰度的封神表演。\n\n3. **《这个杀手不太冷》**（1994）  \n   - 类型：犯罪/温情  \n   - 关键词：大叔与萝莉的救赎，吕克·贝松的经典。\n\n---\n\n### **🌍 高分剧情/悬疑**\n1. **《盗梦空间》**（2010）  \n   - 类型：科幻/烧脑  \n   - 诺兰的“梦中梦”设定，逻辑与视觉的双重震撼。\n\n2. **《寄生虫》**（2019）  \n   - 类型：社会/黑色幽默  \n   - 奥斯卡最佳影片，贫富差距的荒诞寓言。\n\n3. **《消失的爱人》**（2014）  \n   - 类型：悬疑/心理惊悚  \n   - 婚姻背后的暗黑真相，剧情反转不断。\n\n---\n\n### **🚀 科幻/奇幻**\n1. **《星际穿越》**（2014）  \n   - 诺兰硬科幻，虫洞、五维空间与父女情的完美结合。\n\n2. **《阿凡达》**（2009）  \n   - 视觉革命的3D史诗，潘多拉星球的奇幻世界。\n\n3. **《指环王》三部曲**（2001-2003）  \n   - 奇幻文学巅峰，中土世界的宏大冒险。\n\n---\n\n### **😂 喜剧/轻松向**\n1. **《三傻大闹宝莱坞》**（2009）  \n   - 印度励志喜剧，讽刺教育体制，笑中带泪。\n\n2. **《布达佩斯大饭店》**（2014）  \n   - 韦斯·安德森的对称美学，荒诞又治愈。\n\n3. **《疯狂动物城》**（2016）  \n   - 迪士尼动画，动物版“乌托邦”社会隐喻。\n\n---\n\n### **🎭 动画/治愈系**\n1. **《千与千寻》**（2001）  \n   - 宫崎骏奇幻世界，成长与自我救赎。\n\n2. **《寻梦环游记》**（2017）  \n   - 墨西哥亡灵节背景，亲情与梦想的催泪弹。\n\n3. **《蜘蛛侠：平行宇宙》**（2018）  \n   - 多元宇宙视觉盛宴，打破动画边界。\n\n---\n\n### **🔪 惊悚/恐怖**\n1. **《沉默的羔羊》**（1991）  \n   - 心理学惊悚经典，汉尼拔的优雅恐怖。\n\n2. **《闪灵》**（1980）  \n   - 库布里克的心理恐怖，酒店中的疯狂。\n\n3. **《逃出绝命镇》**（2017）  \n   - 种族议题+悬疑，乔丹·皮尔的神剧本。\n\n---\n\n### **🎵 音乐/艺术**\n1. **《爱乐之城》**（2016）  \n   - 歌舞片浪漫巅峰，爵士乐与追梦故事。\n\n2. **《海上钢琴师》**（1998）  \n   - 钢琴天才的孤独史诗，配乐绝美。\n\n---\n\n如果需要更具体的类型（比如某国电影、冷门佳片等），可以告诉我哦！你最近想看哪种风格的电影？ 😊",
       "userId": "bot",
       "username": "AI助手",
       "type": "user",
-      "timestamp": "2025-04-16T12:28:04.452Z"
+      "timestamp": "2025-04-16T12:43:05.291Z"
+    },
+    {
+      "id": "1744807560957",
+      "content": "@bot 使用js写一个随机数的函数",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-16T12:46:00.957Z",
+      "type": "bot"
+    },
+    {
+      "id": "1744807727321",
+      "content": "@bot 使用js写一个随机数的函数\n",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-16T12:48:47.321Z",
+      "type": "bot"
+    },
+    {
+      "id": "1744807761909",
+      "content": "# JavaScript 随机数函数\n\n以下是几种常见的 JavaScript 随机数函数实现：\n\n## 1. 基本随机数函数（0到1之间）\n\n```javascript\nfunction random() {\n  return Math.random();\n}\n```\n\n## 2. 指定范围内的随机整数\n\n```javascript\n/**\n * 生成指定范围内的随机整数\n * @param {number} min - 最小值（包含）\n * @param {number} max - 最大值（包含）\n * @returns {number} 随机整数\n */\nfunction randomInt(min, max) {\n  return Math.floor(Math.random() * (max - min + 1)) + min;\n}\n\n// 示例：生成1到10之间的随机整数\n// const num = randomInt(1, 10);\n```\n\n## 3. 指定范围内的随机浮点数\n\n```javascript\n/**\n * 生成指定范围内的随机浮点数\n * @param {number} min - 最小值（包含）\n * @param {number} max - 最大值（不包含）\n * @param {number} [precision] - 小数位数\n * @returns {number} 随机浮点数\n */\nfunction randomFloat(min, max, precision) {\n  const value = Math.random() * (max - min) + min;\n  return typeof precision === 'number' ? parseFloat(value.toFixed(precision)) : value;\n}\n\n// 示例：生成1.0到5.0之间的随机浮点数，保留2位小数\n// const num = randomFloat(1, 5, 2);\n```\n\n## 4. 从数组中随机选择一个元素\n\n```javascript\n/**\n * 从数组中随机选择一个元素\n * @param {Array} arr - 输入数组\n * @returns {*} 随机选择的元素\n */\nfunction randomChoice(arr) {\n  return arr[Math.floor(Math.random() * arr.length)];\n}\n\n// 示例：从数组中随机选择一个颜色\n// const colors = ['red', 'green', 'blue', 'yellow'];\n// const color = randomChoice(colors);\n```\n\n## 5. 生成随机字符串\n\n```javascript\n/**\n * 生成随机字符串\n * @param {number} length - 字符串长度\n * @returns {string} 随机字符串\n */\nfunction randomString(length) {\n  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\n  let result = '';\n  for (let i = 0; i < length; i++) {\n    result += chars.charAt(Math.floor(Math.random() * chars.length));\n  }\n  return result;\n}\n\n// 示例：生成10位随机字符串\n// const str = randomString(10);\n```\n\n## 注意事项\n\n1. `Math.random()` 生成的是伪随机数，不适合用于加密或安全相关的场景\n2. 如果需要加密安全的随机数，可以使用 `crypto.getRandomValues()` API\n3. 对于需要种子的随机数生成，需要实现特定的随机数算法\n\n希望这些函数能满足你的需求！",
+      "userId": "bot",
+      "username": "AI助手",
+      "type": "user",
+      "timestamp": "2025-04-16T12:49:21.909Z"
+    },
+    {
+      "id": "1744808077471",
+      "content": "@bot 你好啊",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-16T12:54:37.471Z",
+      "type": "bot"
+    },
+    {
+      "id": "1744808083515",
+      "content": "你好呀！😊 很高兴见到你～今天有什么想聊的，或者需要帮忙的吗？无论是闲聊、问题解答，还是想分享新鲜事，我都在这儿呢！✨",
+      "userId": "bot",
+      "username": "AI助手",
+      "type": "user",
+      "tokens": {
+        "prompt_tokens": 5,
+        "completion_tokens": 38,
+        "total_tokens": 43
+      },
+      "timestamp": "2025-04-16T12:54:43.515Z"
     }
   ],
   "onlineUsers": [

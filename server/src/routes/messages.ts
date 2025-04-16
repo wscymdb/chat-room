@@ -1,5 +1,7 @@
 import express from "express";
 import { readData, writeData } from "../utils/fileStorage";
+import { authMiddleware } from "../middleware/auth";
+import { UserRole } from "../types/auth";
 
 interface Message {
   id: string;
@@ -114,5 +116,34 @@ messageRoutes.delete("/:id", async (req, res) => {
   } catch (error) {
     console.error("删除消息失败:", error);
     res.status(500).json({ message: "删除消息失败" });
+  }
+});
+
+// 删除所有消息 (仅超级管理员可用)
+messageRoutes.delete("/all/clear", authMiddleware, async (req, res) => {
+  try {
+    // 检查用户权限，只有超级管理员才能执行此操作
+    if (req.user?.role !== UserRole.SUPER_ADMIN) {
+      return res.status(403).json({
+        message: "权限不足，只有超级管理员可以清空所有消息",
+      });
+    }
+
+    const data = await readData();
+
+    // 备份删除前的消息数量
+    const deletedCount = data.messages.length;
+
+    // 清空消息列表
+    data.messages = [];
+    await writeData(data);
+
+    res.json({
+      message: "所有消息已删除",
+      count: deletedCount,
+    });
+  } catch (error) {
+    console.error("删除所有消息失败:", error);
+    res.status(500).json({ message: "删除所有消息失败" });
   }
 });

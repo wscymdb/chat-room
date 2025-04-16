@@ -1,21 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { useAuth } from "./AuthContext";
-
-interface Message {
-  id: string;
-  content: string;
-  userId: string;
-  username: string;
-  timestamp: number;
-  type: "user" | "bot";
-}
-
-interface User {
-  id: string;
-  username: string;
-  isTyping?: boolean;
-}
+import { Message, User } from "../types/message";
 
 interface SocketContextType {
   messages: Message[];

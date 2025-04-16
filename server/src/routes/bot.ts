@@ -42,7 +42,16 @@ router.post("/", async (req, res) => {
     console.log("DeepSeek API响应:", response.data);
 
     const botResponse = response.data.choices[0].message.content;
-    res.json({ message: botResponse });
+    const tokens = {
+      prompt_tokens: response.data.usage.prompt_tokens,
+      completion_tokens: response.data.usage.completion_tokens,
+      total_tokens: response.data.usage.total_tokens,
+    };
+
+    res.json({
+      message: botResponse,
+      tokens,
+    });
   } catch (error: unknown) {
     console.error("机器人API错误:", error);
     if (axios.isAxiosError(error)) {

@@ -10,6 +10,7 @@ import {
   Badge,
   Flex,
   Mentions,
+  message,
 } from "antd";
 import {
   SendOutlined,
@@ -27,19 +28,10 @@ import ThemeSwitch from "../../components/ThemeSwitch";
 import Message from "../../components/Message";
 import axios from "axios";
 import "./index.less";
+import { Message as MessageType } from "../../types/message";
 
 const { Header, Content, Sider } = Layout;
 const { Text } = Typography;
-
-// 定义Message类型
-type Message = {
-  id: string;
-  content: string;
-  userId: string;
-  username: string;
-  timestamp: number;
-  type: "user" | "bot";
-};
 
 const ChatRoomPage: React.FC = () => {
   const { user, logout } = useAuth();
@@ -82,7 +74,7 @@ const ChatRoomPage: React.FC = () => {
 
       // 添加一个临时的"思考中"消息
       tempMessageId = Date.now().toString();
-      const tempMessage: Message = {
+      const tempMessage: MessageType = {
         id: tempMessageId,
         content: "🤔 机器人思考中...",
         userId: "bot",
@@ -91,7 +83,7 @@ const ChatRoomPage: React.FC = () => {
         type: "bot",
       };
 
-      setMessages((prev: Message[]) => [...prev, tempMessage]);
+      setMessages((prev: MessageType[]) => [...prev, tempMessage]);
 
       // 去掉@bot前缀发送请求
       const cleanMessage = message.replace(/^@bot\s*/i, "");
@@ -109,6 +101,7 @@ const ChatRoomPage: React.FC = () => {
 
       const botResponse =
         response.data.message || "抱歉，我现在无法回答这个问题。";
+      const tokens = response.data.tokens;
 
       // 发送机器人回复，使用特殊的消息格式
       if (socket && user) {
@@ -117,21 +110,22 @@ const ChatRoomPage: React.FC = () => {
           userId: "bot",
           username: "AI助手",
           type: "bot" as const,
+          tokens,
         };
         socket.emit("message", botMessage);
 
         // 移除临时消息
         if (tempMessageId) {
-          setMessages((prev: Message[]) =>
-            prev.filter((msg: Message) => msg.id !== tempMessageId)
+          setMessages((prev: MessageType[]) =>
+            prev.filter((msg: MessageType) => msg.id !== tempMessageId)
           );
         }
       }
     } catch (error) {
       // 移除临时消息
       if (tempMessageId) {
-        setMessages((prev: Message[]) =>
-          prev.filter((msg: Message) => msg.id !== tempMessageId)
+        setMessages((prev: MessageType[]) =>
+          prev.filter((msg: MessageType) => msg.id !== tempMessageId)
         );
       }
 
@@ -283,6 +277,8 @@ const ChatRoomPage: React.FC = () => {
                     username={message.username}
                     isSelf={message.userId === user?.id}
                     type={message.type}
+                    tokens={message.tokens}
+                    userId={message.userId}
                   />
                 </div>
               );

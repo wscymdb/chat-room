@@ -3,7 +3,7 @@
 
   .content-container {
     display: flex;
-    gap: 24px;
+    gap: 20px;
 
     .left-panel {
       flex: 1;
@@ -11,14 +11,20 @@
 
       .table-header {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        gap: 16px;
         margin-bottom: 16px;
+
+        .table-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
 
         .search-form {
           display: flex;
-          align-items: center;
-          gap: 16px;
+          flex-wrap: wrap;
+          gap: 8px;
         }
       }
 
@@ -39,12 +45,13 @@
           gap: 16px;
 
           .stat-icon {
-            font-size: 24px;
+            font-size: 36px;
             color: #1890ff;
           }
 
           .stat-info {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
 
             .ant-typography {
               margin: 0;

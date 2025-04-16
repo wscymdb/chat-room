@@ -9,14 +9,20 @@ import {
   Input,
   Select,
   Form,
+  Modal,
+  Popconfirm,
 } from "antd";
 import {
   MessageOutlined,
   DeleteOutlined,
   SearchOutlined,
   ReloadOutlined,
+  ClearOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
+import { useAuth } from "../../../contexts/AuthContext";
+import { UserRole } from "../../../types/auth";
 import "./index.less";
 
 const { Title, Text } = Typography;
@@ -35,6 +41,7 @@ interface UsernameOption {
 }
 
 const MessagesPage: React.FC = () => {
+  const { user, hasPermission } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [usernames, setUsernames] = useState<UsernameOption[]>([]);
@@ -98,6 +105,39 @@ const MessagesPage: React.FC = () => {
     fetchMessages();
   };
 
+  const handleDeleteAllMessages = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/messages/all/clear`
+      );
+      message.success(`成功删除了 ${response.data.count} 条消息`);
+      fetchMessages();
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        message.error("权限不足，只有超级管理员可以清空所有消息");
+      } else {
+        message.error("删除失败，请稍后重试");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const confirmDeleteAll = () => {
+    Modal.confirm({
+      title: "危险操作",
+      icon: <ExclamationCircleOutlined />,
+      content: "确定要删除所有消息吗？此操作不可恢复！",
+      okText: "确定删除",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        handleDeleteAllMessages();
+      },
+    });
+  };
+
   const columns = [
     {
       title: "ID",
@@ -149,7 +189,19 @@ const MessagesPage: React.FC = () => {
         <div className="left-panel">
           <Card>
             <div className="table-header">
-              <Title level={4}>消息列表</Title>
+              <div className="table-title">
+                <Title level={4}>消息列表</Title>
+                {user?.role === UserRole.SUPER_ADMIN && (
+                  <Button
+                    type="primary"
+                    danger
+                    icon={<ClearOutlined />}
+                    onClick={confirmDeleteAll}
+                  >
+                    一键清空
+                  </Button>
+                )}
+              </div>
               <Form
                 form={form}
                 layout="inline"
