@@ -22,6 +22,7 @@ interface SocketContextType {
   onlineUsers: User[];
   sendMessage: (content: string) => void;
   socket: Socket | null;
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -43,6 +44,12 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         username: user.username,
         // avatar: user.avatar,
       },
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      timeout: 20000,
     });
 
     setSocket(newSocket);
@@ -111,6 +118,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     onlineUsers,
     sendMessage,
     socket,
+    setMessages,
   };
 
   return (

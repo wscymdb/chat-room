@@ -26,6 +26,25 @@ export const setupSocket = (io: Server) => {
       return;
     }
 
+    // 添加错误处理
+    socket.on("error", (error) => {
+      console.error("Socket error:", error);
+    });
+
+    // 添加重连处理
+    socket.on("reconnect", (attemptNumber) => {
+      console.log(`Socket reconnected after ${attemptNumber} attempts`);
+    });
+
+    // 添加断开连接处理
+    socket.on("disconnect", (reason) => {
+      console.log(`Socket disconnected: ${reason}`);
+      if (reason === "io server disconnect") {
+        // 服务器主动断开连接，尝试重连
+        socket.connect();
+      }
+    });
+
     // 读取数据
     const data = await readData();
 
@@ -65,7 +84,7 @@ export const setupSocket = (io: Server) => {
       "message",
       async (
         messageData: Omit<Message, "id" | "timestamp" | "type">,
-        callback: (response: { success: boolean }) => void
+        callback?: (response: { success: boolean }) => void
       ) => {
         try {
           const newMessage = {
@@ -83,10 +102,14 @@ export const setupSocket = (io: Server) => {
           io.emit("message", newMessage);
 
           // 发送成功回调
-          callback({ success: true });
+          if (typeof callback === "function") {
+            callback({ success: true });
+          }
         } catch (error) {
           console.error("消息处理错误:", error);
-          callback({ success: false });
+          if (typeof callback === "function") {
+            callback({ success: false });
+          }
         }
       }
     );

@@ -31,9 +31,20 @@ import "./index.less";
 const { Header, Content, Sider } = Layout;
 const { Text } = Typography;
 
+// 定义Message类型
+type Message = {
+  id: string;
+  content: string;
+  userId: string;
+  username: string;
+  timestamp: number;
+  type: "user" | "bot";
+};
+
 const ChatRoomPage: React.FC = () => {
   const { user, logout } = useAuth();
-  const { messages, onlineUsers, sendMessage, socket } = useSocket();
+  const { messages, onlineUsers, sendMessage, socket, setMessages } =
+    useSocket();
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,14 +72,33 @@ const ChatRoomPage: React.FC = () => {
   };
 
   const handleBotMessage = async (message: string) => {
+    let tempMessageId: string | null = null;
     try {
       // 先发送用户的消息
       sendMessage(message);
 
+      // 等待一小段时间确保消息已经显示
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // 添加一个临时的"思考中"消息
+      tempMessageId = Date.now().toString();
+      const tempMessage: Message = {
+        id: tempMessageId,
+        content: "🤔 机器人思考中...",
+        userId: "bot",
+        username: "AI助手",
+        timestamp: Date.now(),
+        type: "bot",
+      };
+
+      setMessages((prev: Message[]) => [...prev, tempMessage]);
+
+      // 去掉@bot前缀发送请求
+      const cleanMessage = message.replace(/^@bot\s*/i, "");
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/bot`,
         {
-          message: message,
+          message: cleanMessage,
         },
         {
           headers: {
@@ -83,19 +113,33 @@ const ChatRoomPage: React.FC = () => {
       // 发送机器人回复，使用特殊的消息格式
       if (socket && user) {
         const botMessage = {
-          content: `@bot ${botResponse}`,
-          userId: "bot", // 使用特殊的bot用户ID
+          content: botResponse,
+          userId: "bot",
           username: "AI助手",
           type: "bot" as const,
         };
         socket.emit("message", botMessage);
+
+        // 移除临时消息
+        if (tempMessageId) {
+          setMessages((prev: Message[]) =>
+            prev.filter((msg: Message) => msg.id !== tempMessageId)
+          );
+        }
       }
     } catch (error) {
+      // 移除临时消息
+      if (tempMessageId) {
+        setMessages((prev: Message[]) =>
+          prev.filter((msg: Message) => msg.id !== tempMessageId)
+        );
+      }
+
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.error || error.message;
         if (socket && user) {
           const errorBotMessage = {
-            content: `@bot 抱歉，发生了错误：${errorMessage}`,
+            content: `抱歉，发生了错误：${errorMessage}`,
             userId: "bot",
             username: "AI助手",
             type: "bot" as const,
@@ -105,7 +149,7 @@ const ChatRoomPage: React.FC = () => {
       } else {
         if (socket && user) {
           const errorBotMessage = {
-            content: "@bot 抱歉，机器人暂时无法响应，请稍后再试。",
+            content: "抱歉，机器人暂时无法响应，请稍后再试。",
             userId: "bot",
             username: "AI助手",
             type: "bot" as const,
