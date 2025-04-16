@@ -9,13 +9,16 @@ import {
   Space,
   Badge,
   Flex,
+  Mentions,
 } from "antd";
+import type { MentionsProps } from "antd/es/mentions";
 import {
   SendOutlined,
   LogoutOutlined,
   UserOutlined,
   SearchOutlined,
   SettingOutlined,
+  RobotOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
@@ -23,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { UserRole } from "../../types/auth";
 import ThemeSwitch from "../../components/ThemeSwitch";
 import Message from "../../components/Message";
+import axios from "axios";
 import "./index.less";
 
 const { Header, Content, Sider } = Layout;
@@ -35,6 +39,7 @@ const ChatRoomPage: React.FC = () => {
   const navigate = useNavigate();
   const [newMessage, setNewMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showBotMention, setShowBotMention] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   console.log(user?.role);
@@ -51,16 +56,72 @@ const ChatRoomPage: React.FC = () => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
-    sendMessage(newMessage);
+    if (newMessage.toLowerCase().includes("@bot")) {
+      handleBotMessage(newMessage);
+    } else {
+      sendMessage(newMessage);
+    }
     setNewMessage("");
   };
 
+  const handleBotMessage = async (message: string) => {
+    try {
+      console.log("发送机器人请求:", message);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/bot`,
+        {
+          message: message,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("机器人响应:", response.data);
+      const botResponse =
+        response.data.message || "抱歉，我现在无法回答这个问题。";
+      sendMessage(`@bot ${botResponse}`);
+    } catch (error) {
+      console.error("机器人响应错误:", error);
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error || error.message;
+        sendMessage(`@bot 抱歉，发生了错误：${errorMessage}`);
+      } else {
+        sendMessage("@bot 抱歉，机器人暂时无法响应，请稍后再试。");
+      }
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !showBotMention) {
       e.preventDefault();
       handleSendMessage(e);
     }
   };
+
+  const handleInputChange = (value: string) => {
+    setNewMessage(value);
+    setShowBotMention(value.toLowerCase().includes("@"));
+  };
+
+  const handleSelect = (option: any, prefix: string) => {
+    setNewMessage("@" + option.value + " ");
+    setShowBotMention(false);
+  };
+
+  const mentionOptions = [
+    {
+      value: "bot",
+      label: (
+        <Space>
+          <RobotOutlined />
+          <span>AI助手</span>
+        </Space>
+      ),
+    },
+  ];
 
   const formatDate = (timestamp: string | number) => {
     const date = new Date(timestamp);
@@ -155,7 +216,9 @@ const ChatRoomPage: React.FC = () => {
                     content={message.content}
                     timestamp={message.timestamp}
                     username={message.username}
-                    isSelf={isCurrentUser}
+                    isSelf={
+                      isCurrentUser && !message.content.startsWith("@bot")
+                    }
                   />
                 </div>
               );
@@ -164,12 +227,16 @@ const ChatRoomPage: React.FC = () => {
           </div>
           <Flex className="input-container">
             <form onSubmit={handleSendMessage}>
-              <TextArea
+              <Mentions
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
-                placeholder="输入消息..."
-                // autoSize={{ minRows: 2, maxRows: 2 }}
+                onSelect={handleSelect}
+                placeholder="输入消息，使用@来呼叫机器人..."
+                options={showBotMention ? mentionOptions : []}
+                style={{ width: "100%", height: "100%" }}
+                prefix="@"
+                split=" "
               />
               <Button
                 type="primary"

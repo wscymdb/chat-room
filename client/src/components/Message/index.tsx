@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, RobotOutlined } from "@ant-design/icons";
 import classNames from "classnames";
 import "./index.less";
 
@@ -24,22 +24,30 @@ const Message: React.FC<MessageProps> = ({
     return `${hours}:${minutes}`;
   };
 
+  const isBotMessage = content.startsWith("@bot");
+  const displayUsername = isBotMessage ? "AI助手" : username;
+
   return (
     <div
       className={classNames("message-item", { "message-item-right": isSelf })}
     >
-      {!isSelf && <Avatar icon={<UserOutlined />} className="message-avatar" />}
+      {!isSelf && (
+        <Avatar
+          icon={isBotMessage ? <RobotOutlined /> : <UserOutlined />}
+          className="message-avatar"
+        />
+      )}
       <div
         className={classNames("message-content", {
           "message-content-right": isSelf,
           "message-content-left": !isSelf,
         })}
       >
-        {!isSelf && username && (
-          <div className="message-username">{username}</div>
+        {!isSelf && displayUsername && (
+          <div className="message-username">{displayUsername}</div>
         )}
         <div className="message-bubble">
-          {content}
+          {isBotMessage ? content.replace("@bot ", "") : content}
           <div className="message-time">{formatMessageTime(timestamp)}</div>
         </div>
       </div>
