@@ -1,6 +1,11 @@
 import React from "react";
 import { Avatar, message, Tooltip } from "antd";
-import { UserOutlined, RobotOutlined, CopyOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  RobotOutlined,
+  CopyOutlined,
+  BookOutlined,
+} from "@ant-design/icons";
 import classNames from "classnames";
 import ReactMarkdown from "react-markdown";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -46,7 +51,7 @@ interface MessageProps {
   timestamp: number;
   username?: string;
   isSelf?: boolean;
-  type: "user" | "bot";
+  type: "user" | "bot" | "poemBot";
   tokens?: {
     prompt_tokens?: number;
     completion_tokens?: number;
@@ -75,6 +80,7 @@ const Message: React.FC<MessageProps> = ({
   const getDisplayUsername = () => {
     if (isSelf) return "我";
     if (type === "bot") return "AI助手";
+    if (userId === "poemBot") return "诗词机器人";
     return username;
   };
 
@@ -82,6 +88,7 @@ const Message: React.FC<MessageProps> = ({
   const getAvatarIcon = () => {
     if (isSelf) return <UserOutlined />;
     if (type === "bot") return <RobotOutlined />;
+    if (userId === "poemBot") return <BookOutlined />;
     return <UserOutlined />;
   };
 
@@ -127,6 +134,11 @@ const Message: React.FC<MessageProps> = ({
 
   // 解析 Markdown 内容
   const renderBotContent = () => {
+    // 如果是诗词机器人，使用特殊渲染
+    if (userId === "poemBot") {
+      return renderPoemContent();
+    }
+
     // 使用正则表达式匹配代码块
     const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
     let lastIndex = 0;
@@ -164,6 +176,65 @@ const Message: React.FC<MessageProps> = ({
     return parts.length > 0 ? parts : <ReactMarkdown>{content}</ReactMarkdown>;
   };
 
+  // 添加诗词特殊渲染函数
+  const renderPoemContent = () => {
+    // 尝试提取诗名、作者、诗句和解析
+    const lines = content.split("\n");
+    let poemTitle = "";
+    let poemAuthor = "";
+    let poemContent = [];
+    let poemAnalysis = "";
+
+    let currentSection = "header";
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+
+      if (i === 0) {
+        // 第一行通常是诗名
+        poemTitle = line;
+      } else if (i === 1) {
+        // 第二行通常是作者
+        poemAuthor = line;
+      } else if (line.startsWith("【解析】") || line.includes("【解析】")) {
+        // 标记为解析部分开始
+        currentSection = "analysis";
+        poemAnalysis +=
+          line.replace("【解析】：", "").replace("【解析】", "") + "\n";
+      } else if (currentSection === "analysis") {
+        // 如果当前是解析部分，就继续添加到解析中
+        poemAnalysis += line + "\n";
+      } else if (line.length > 0) {
+        // 其他非空行是诗句
+        poemContent.push(line);
+      }
+    }
+
+    return (
+      <div className="poem-content">
+        <div className="poem-header">
+          <div className="poem-title">{poemTitle}</div>
+          <div className="poem-author">{poemAuthor}</div>
+        </div>
+        <div className="poem-verses">
+          {poemContent.map((verse, index) => (
+            <div key={index} className="poem-verse">
+              <ReactMarkdown>{verse}</ReactMarkdown>
+            </div>
+          ))}
+        </div>
+        {poemAnalysis && (
+          <div className="poem-analysis">
+            <div className="analysis-title">【解析】</div>
+            <div className="analysis-content">
+              <ReactMarkdown>{poemAnalysis}</ReactMarkdown>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div
       className={classNames("message-item", {
@@ -199,6 +270,39 @@ const Message: React.FC<MessageProps> = ({
                 renderBotContent()
               )}
               {!content.includes("🤔 机器人思考中") && tokens && (
+                <div className="message-bot-footer">
+                  <div className="message-tokens">
+                    {tokens.total_tokens && (
+                      <span>总tokens: {tokens.total_tokens}</span>
+                    )}
+                    {tokens.prompt_tokens && tokens.completion_tokens && (
+                      <span className="token-detail">
+                        (提问: {tokens.prompt_tokens} / 回复:{" "}
+                        {tokens.completion_tokens})
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : userId === "poemBot" ? (
+            <div>
+              {!content.includes("🤔 诗词机器人思考中") && (
+                <div className="message-bot-header">
+                  <Tooltip title="复制全部">
+                    <CopyOutlined
+                      className="copy-message-icon"
+                      onClick={() => handleCopy(content)}
+                    />
+                  </Tooltip>
+                </div>
+              )}
+              {content.includes("🤔 诗词机器人思考中") ? (
+                <div className="thinking-message">{content}</div>
+              ) : (
+                renderBotContent()
+              )}
+              {!content.includes("🤔 诗词机器人思考中") && tokens && (
                 <div className="message-bot-footer">
                   <div className="message-tokens">
                     {tokens.total_tokens && (

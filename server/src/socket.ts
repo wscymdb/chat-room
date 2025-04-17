@@ -14,7 +14,7 @@ interface Message {
   content: string;
   timestamp: string;
   avatar: string;
-  type: "user" | "bot";
+  type: "user" | "bot" | "poemBot";
 }
 
 export const setupSocket = (io: Server) => {
@@ -87,11 +87,24 @@ export const setupSocket = (io: Server) => {
         callback?: (response: { success: boolean }) => void
       ) => {
         try {
+          let messageType: "user" | "bot" | "poemBot" = "user";
+
+          // 根据消息内容和userId判断消息类型
+          if (messageData.userId === "bot") {
+            messageType = "bot";
+          } else if (messageData.userId === "poemBot") {
+            messageType = "poemBot";
+          } else if (messageData.content.startsWith("@bot")) {
+            messageType = "bot";
+          } else if (messageData.content.startsWith("@poem")) {
+            messageType = "poemBot";
+          }
+
           const newMessage = {
             id: Date.now().toString(),
             ...messageData,
             timestamp: new Date().toISOString(),
-            type: messageData.content.startsWith("@bot") ? "bot" : "user",
+            type: messageType,
           };
 
           // 保存消息

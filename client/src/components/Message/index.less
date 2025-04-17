@@ -275,3 +275,118 @@ html[data-theme="dark"] {
     }
   }
 }
+
+// 添加诗词样式
+.poem-content {
+  padding: 8px 0;
+
+  .poem-header {
+    margin-bottom: 16px;
+    text-align: center;
+
+    .poem-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1d2129;
+      margin-bottom: 8px;
+    }
+
+    .poem-author {
+      font-size: 14px;
+      color: #5c6873;
+    }
+  }
+
+  .poem-verses {
+    margin: 16px 0;
+
+    .poem-verse {
+      font-size: 16px;
+      line-height: 1.8;
+      text-align: center;
+      margin: 6px 0;
+      color: #2b3440;
+      font-family: "STKaiti", "KaiTi", "FangSong", serif;
+
+      p {
+        margin: 0;
+        text-align: center;
+      }
+
+      strong {
+        font-weight: bold;
+        font-family: "STKaiti", "KaiTi", "FangSong", serif;
+      }
+    }
+  }
+
+  .poem-analysis {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border-left: 3px solid #b2cfff;
+
+    .analysis-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1d2129;
+      margin-bottom: 8px;
+    }
+
+    .analysis-content {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #4e5969;
+
+      p {
+        margin: 0 0 8px 0;
+      }
+
+      strong {
+        font-weight: bold;
+        color: #2b3440;
+      }
+
+      ul,
+      ol {
+        padding-left: 20px;
+        margin: 8px 0;
+      }
+    }
+  }
+}
+
+// 在深色模式下调整诗词样式
+[data-theme="dark"] {
+  .poem-content {
+    .poem-header {
+      .poem-title {
+        color: #e8eaed;
+      }
+
+      .poem-author {
+        color: #a9b2bd;
+      }
+    }
+
+    .poem-verses {
+      .poem-verse {
+        color: #d6dae0;
+      }
+    }
+
+    .poem-analysis {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-left: 3px solid #5c6980;
+
+      .analysis-title {
+        color: #d6dae0;
+      }
+
+      .analysis-content {
+        color: #a9b2bd;
+      }
+    }
+  }
+}
