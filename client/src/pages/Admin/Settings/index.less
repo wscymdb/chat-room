@@ -1,7 +1,77 @@
 .settings-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+
   .ant-card {
-    background: #fff;
+    background: var(--card-bg);
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .description {
+    display: block;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  .config-section {
+    background: var(--sider-bg);
+    padding: 24px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+
+    .ant-typography {
+      color: var(--text-color);
+      margin-bottom: 16px;
+    }
+
+    .ant-form-item {
+      margin-bottom: 24px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .ant-form-item-label {
+        label {
+          color: var(--text-color);
+          font-weight: 500;
+        }
+      }
+
+      .ant-input-number {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+
+        input {
+          color: var(--text-color);
+        }
+
+        .ant-input-number-handler-wrap {
+          background: var(--card-bg);
+          border-color: var(--border-color);
+        }
+      }
+
+      .ant-input-textarea {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+
+        textarea {
+          color: var(--text-color);
+          background: var(--card-bg);
+
+          &::placeholder {
+            color: var(--placeholder-color);
+          }
+        }
+      }
+    }
+  }
+
+  .ant-btn {
+    height: 40px;
+    font-size: 16px;
   }
 }

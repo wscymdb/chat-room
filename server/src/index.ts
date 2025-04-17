@@ -7,6 +7,7 @@ import path from "path";
 import { setupRoutes } from "./routes/index";
 import { setupSocket } from "./socket";
 import fs from "fs";
+import botConfigRouter from "./routes/botConfig";
 
 // 配置 dotenv 从项目根目录读取 .env 文件
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
@@ -55,6 +56,9 @@ app.use("/api", (req, res, next) => {
 
 // 设置路由
 setupRoutes(app);
+
+// 注册路由
+app.use("/api/bot-config", botConfigRouter);
 
 // 添加默认路由，确保访问根路径时返回 index.html
 app.get("/*", (req, res) => {
