@@ -1,8 +1,12 @@
 # 构建阶段
 FROM node:18-alpine as builder
 WORKDIR /app
+# 添加一个标记，强制刷新缓存
+ARG CACHEBUST=1
 # 复制所有文件
 COPY . .
+# 检查文件是否存在
+RUN ls -la
 # 安装所有依赖并构建
 RUN npm run install:all
 RUN chmod +x build.sh

@@ -39,7 +39,8 @@ pipeline {
                 script {
                     try {
                         sh """
-                            docker build -t ${env.DOCKER_IMAGE}:${BUILD_NUMBER} .
+                            # 使用 --no-cache 参数强制重新构建，传入当前时间作为 CACHEBUST 参数
+                            docker build --no-cache --build-arg CACHEBUST=\$(date +%s) -t ${env.DOCKER_IMAGE}:${BUILD_NUMBER} .
                             docker tag ${env.DOCKER_IMAGE}:${BUILD_NUMBER} ${env.DOCKER_IMAGE}:latest
                         """
                     } catch (Exception e) {
