@@ -1,14 +1,21 @@
-FROM node:18-alpine
-
+# 构建阶段
+FROM node:18-alpine as builder
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm config set registry https://registry.npmmirror.com/ && \
-    npm install
-
+# 复制所有文件
 COPY . .
+# 安装所有依赖并构建
+RUN npm run install:all
+RUN npm run build
+
+# 运行阶段
+FROM node:18-alpine
+WORKDIR /app
+# 复制dist目录的所有内容
+COPY --from=builder /app/server/dist ./
+# 在当前目录（dist的内容）下安装依赖
+RUN npm install
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+# 直接运行编译后的index.js
+CMD ["node", "index.js"]
