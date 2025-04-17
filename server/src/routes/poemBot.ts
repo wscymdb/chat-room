@@ -29,7 +29,13 @@ router.post("/", async (req, res) => {
     // 处理"随机"请求，直接随机推荐
     if (message.trim() === "随机") {
       prompt =
-        "请随机推荐一首中国古诗词。第1行必须是诗名，第2行必须是作者名（作者不详的也请标明'作者不详'），第3行开始是诗句，最后部分是解析。格式为：\n诗名\n作者\n\n诗句\n\n【解析】：详细解析";
+        "请随机推荐一首中国古诗词，要求：\n" +
+        "1. 必须是不同的诗词，不要重复推荐\n" +
+        "2. 第1行必须是诗名\n" +
+        "3. 第2行必须是作者名（作者不详的也请标明'作者不详'）\n" +
+        "4. 第3行开始是诗句\n" +
+        "5. 最后部分是解析\n" +
+        "格式为：\n诗名\n作者\n\n诗句\n\n【解析】：详细解析";
     }
     // 改进作者识别规则
     else {
@@ -57,7 +63,7 @@ router.post("/", async (req, res) => {
       {
         model: "deepseek-chat",
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
+        temperature: message.trim() === "随机" ? 1.0 : 0.7,
         max_tokens: 1000,
       },
       {

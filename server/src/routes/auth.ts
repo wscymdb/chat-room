@@ -40,7 +40,7 @@ authRoutes.post("/register", async (req, res) => {
 
     // 生成 token
     const token = jwt.sign(
-      { id: newUser.id, username: newUser.username },
+      { userId: newUser.id, username: newUser.username },
       process.env.JWT_SECRET || "default-secret-key-for-development-only",
       { expiresIn: "24h" }
     );
@@ -73,7 +73,7 @@ authRoutes.post("/login", async (req, res) => {
 
     // 生成 token
     const token = jwt.sign(
-      { id: user.id, username: user.username },
+      { userId: user.id, username: user.username },
       process.env.JWT_SECRET || "your-secret-key",
       { expiresIn: "24h" }
     );

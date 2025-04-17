@@ -26,11 +26,12 @@ export const authMiddleware = async (
       token,
       process.env.JWT_SECRET || "your-secret-key"
     ) as {
-      id: string;
+      userId: string;
+      username: string;
     };
 
     const data = await readData();
-    const user = data.users.find((u: User) => u.id === decoded.id);
+    const user = data.users.find((u: User) => u.id === decoded.userId);
 
     if (!user) {
       return res.status(401).json({ message: "用户不存在" });

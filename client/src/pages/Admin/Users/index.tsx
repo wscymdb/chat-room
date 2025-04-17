@@ -40,6 +40,8 @@ const UsersPage: React.FC = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      console.log("API URL:", import.meta.env.VITE_API_URL);
+      console.log("Token:", token);
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/users`,
         {
@@ -50,6 +52,8 @@ const UsersPage: React.FC = () => {
       );
       setUsers(response.data);
     } catch (error: any) {
+      console.error("Error fetching users:", error);
+      console.error("Error response:", error.response);
       message.error(error.response?.data?.message || "获取用户列表失败");
     } finally {
       setLoading(false);

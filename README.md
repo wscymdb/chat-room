@@ -137,6 +137,9 @@ npm run dev
 # 启动后端服务器
 cd ../server
 npm run dev
+
+# 可以选择这里一键启动
+npm run dev
 ```
 
 ## 版本历史
