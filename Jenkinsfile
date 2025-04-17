@@ -26,10 +26,10 @@ pipeline {
         stage('准备构建环境') {
             steps {
                 echo '准备构建环境...'
-                // 显示当前的文件列表和工作目录
-                sh 'pwd && ls -la'
-                // 检查 build.sh 文件内容
-                sh 'test -f build.sh && cat build.sh || echo "无法显示内容，因为文件不存在"'
+                // // 显示当前的文件列表和工作目录
+                // sh 'pwd && ls -la'
+                // // 检查 build.sh 文件内容
+                // sh 'test -f build.sh && cat build.sh || echo "无法显示内容，因为文件不存在"'
             }
         }
         
