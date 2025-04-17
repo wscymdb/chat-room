@@ -115,11 +115,13 @@ npm install
 
 3. 环境变量配置
 
+在项目根目录下创建 `.env` 文件：
+
 ```bash
-# 在 client 目录下创建 .env 文件
+# 前端配置
 VITE_API_URL=http://localhost:3000
 
-# 在 server 目录下创建 .env 文件
+# 后端配置
 PORT=3000
 JWT_SECRET=your_jwt_secret
 DEEPSEEK_API_KEY=your_deepseek_api_key
