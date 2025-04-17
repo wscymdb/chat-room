@@ -16,20 +16,16 @@ pipeline {
                 sh 'git fetch --all'
                 sh 'git reset --hard origin/main'  // 或者替换为您的目标分支
                 // 检查文件是否存在
-                sh 'ls -la'
-                sh 'test -f build.sh && echo "build.sh 文件存在" || echo "build.sh 文件不存在"'
+                // sh 'ls -la'
+                // sh 'test -f build.sh && echo "build.sh 文件存在" || echo "build.sh 文件不存在"'
                 // 确保 build.sh 有执行权限
-                sh 'test -f build.sh && chmod +x build.sh || echo "无法设置执行权限，因为文件不存在"'
+                // sh 'test -f build.sh && chmod +x build.sh || echo "无法设置执行权限，因为文件不存在"'
             }
         }
         
         stage('准备构建环境') {
             steps {
                 echo '准备构建环境...'
-                // // 显示当前的文件列表和工作目录
-                // sh 'pwd && ls -la'
-                // // 检查 build.sh 文件内容
-                // sh 'test -f build.sh && cat build.sh || echo "无法显示内容，因为文件不存在"'
             }
         }
         
@@ -39,7 +35,6 @@ pipeline {
                 script {
                     try {
                         sh """
-                            # 使用 --no-cache 参数强制重新构建，传入当前时间作为 CACHEBUST 参数
                             docker build --no-cache --build-arg CACHEBUST=\$(date +%s) -t ${env.DOCKER_IMAGE}:${BUILD_NUMBER} .
                             docker tag ${env.DOCKER_IMAGE}:${BUILD_NUMBER} ${env.DOCKER_IMAGE}:latest
                         """
