@@ -5,7 +5,8 @@ WORKDIR /app
 COPY . .
 # 安装所有依赖并构建
 RUN npm run install:all
-RUN npm run build:ci
+RUN chmod +x build.sh
+RUN ./build.sh ci
 
 # 运行阶段
 FROM node:18-alpine
