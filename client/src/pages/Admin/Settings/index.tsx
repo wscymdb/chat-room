@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, KeyboardEvent } from "react";
 import {
   Card,
   Form,
@@ -103,6 +103,14 @@ const SettingsPage: React.FC = () => {
       console.error("生成提示词错误:", error);
     } finally {
       setPromptLoading(false);
+    }
+  };
+
+  // 处理Tab键事件
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab" && !e.shiftKey && !promptLoading) {
+      e.preventDefault(); // 阻止默认Tab行为
+      generatePrompt();
     }
   };
 
@@ -211,22 +219,36 @@ const SettingsPage: React.FC = () => {
               <Form.Item
                 label="系统提示"
                 name="systemPrompt"
-                tooltip="设置 AI 助手的基本角色和回答风格。"
+                tooltip="设置 AI 助手的基本角色和回答风格。按Tab键可自动补全提示词。"
                 rules={[{ required: true, message: "请输入系统提示词" }]}
               >
                 <Input.TextArea
                   rows={4}
-                  placeholder="例如：你是一个专业的AI助手，请用简洁明了的语言回答用户的问题。"
+                  placeholder="例如：你是一个专业的AI助手，请用简洁明了的语言回答用户的问题。按Tab键补全..."
+                  onKeyDown={handleKeyDown}
                 />
               </Form.Item>
-              <Button
-                type="default"
-                onClick={generatePrompt}
-                loading={promptLoading}
-                style={{ marginBottom: "16px" }}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "16px",
+                }}
               >
-                AI补全提示词
-              </Button>
+                <span
+                  className="text-muted"
+                  style={{ fontSize: "12px", color: "#888" }}
+                >
+                  提示: 按Tab键可快速补全提示词
+                </span>
+                <Button
+                  type="default"
+                  onClick={generatePrompt}
+                  loading={promptLoading}
+                >
+                  AI补全提示词
+                </Button>
+              </div>
             </div>
 
             <Form.Item>
