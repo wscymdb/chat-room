@@ -1,11 +1,16 @@
 pipeline {
     agent any
     
+    // environment {
+    //     APP_NAME = 'chat-room'  // 使用实际的项目名称
+    //     DOCKER_IMAGE = "${APP_NAME}"
+    //     PORT = '3000'
+    // }
+
     environment {
-        APP_NAME = 'chat-room'  // 使用实际的项目名称
-        DOCKER_IMAGE = "${APP_NAME}"
-        PORT = '3000'
-    }
+           APP_NAME = 'chat-room-test'  // 测试版本使用不同的名称
+           PORT = '3001'  // 使用不同的端口避免冲突
+       }
     
     stages {
         stage('检出代码') {
