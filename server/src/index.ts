@@ -8,7 +8,8 @@ import { setupRoutes } from "./routes/index";
 import { setupSocket } from "./socket";
 import fs from "fs";
 
-dotenv.config();
+// 配置 dotenv 从项目根目录读取 .env 文件
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 const app = express();
 const server = createServer(app);
