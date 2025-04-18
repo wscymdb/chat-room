@@ -7,6 +7,11 @@ export default defineConfig({
   base: "/",
   plugins: [react()],
   envDir: path.resolve(__dirname, ".."),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
   server: {
     port: 5173,
     proxy: {

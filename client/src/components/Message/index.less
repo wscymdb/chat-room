@@ -261,18 +261,54 @@
 }
 
 /* 添加暗黑模式样式 */
-html[data-theme="dark"] {
+html[data-theme="dark"],
+:global(.dark) {
   .message-item {
+    &.message-item-bot {
+      .message-content {
+        .message-bubble {
+          background: #1f2937;
+          border: 1px solid #374151;
+        }
+      }
+    }
+
     .message-content {
       &.message-content-left,
       &.message-content-bot {
         .message-bubble {
+          background: #1f2937;
+          border: 1px solid #374151;
+
+          pre,
+          code,
+          .inline-code {
+            background-color: #2d3748;
+            color: #e2e8f0;
+          }
+
+          blockquote {
+            border-left-color: #4b5563;
+            color: #9ca3af;
+          }
+
           .message-time {
             color: rgba(255, 255, 255, 0.65);
           }
         }
       }
     }
+  }
+
+  .code-block-wrapper {
+    .code-block-header {
+      background-color: #1e293b;
+      border-bottom: 1px solid #2d3748;
+    }
+  }
+
+  .message-bot-footer {
+    border-top: 1px solid #374151;
   }
 }
 
@@ -358,7 +394,8 @@ html[data-theme="dark"] {
 }
 
 // 在深色模式下调整诗词样式
-[data-theme="dark"] {
+html[data-theme="dark"],
+:global(.dark) {
   .poem-content {
     .poem-header {
       .poem-title {
@@ -377,8 +414,8 @@ html[data-theme="dark"] {
     }
 
     .poem-analysis {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-left: 3px solid #5c6980;
+      background-color: #1f2937;
+      border-left: 3px solid #4b5563;
 
       .analysis-title {
         color: #d6dae0;
@@ -386,6 +423,10 @@ html[data-theme="dark"] {
 
       .analysis-content {
         color: #a9b2bd;
+
+        strong {
+          color: #d1d5db;
+        }
       }
     }
   }

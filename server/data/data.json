@@ -53,6 +53,56 @@
         "prompt_cache_miss_tokens": 8
       },
       "timestamp": "2025-04-18T06:34:09.754Z"
+    },
+    {
+      "id": "1744968200348",
+      "content": "1",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-18T09:23:20.348Z",
+      "type": "user"
+    },
+    {
+      "id": "1744968215853",
+      "content": "@bot 你好",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-18T09:23:35.853Z",
+      "type": "bot"
+    },
+    {
+      "id": "1744968220695",
+      "content": "你好！😊 很高兴见到你～有什么我可以帮你的吗？",
+      "userId": "bot",
+      "username": "AI助手",
+      "type": "bot",
+      "tokens": {
+        "prompt_tokens": 4,
+        "completion_tokens": 15,
+        "total_tokens": 19,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4
+      },
+      "timestamp": "2025-04-18T09:23:40.695Z"
+    },
+    {
+      "id": "1744968351633",
+      "content": "111",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-18T09:25:51.633Z",
+      "type": "user"
+    },
+    {
+      "id": "1744968352751",
+      "content": "22",
+      "userId": "1744618385443",
+      "username": "chh",
+      "timestamp": "2025-04-18T09:25:52.751Z",
+      "type": "user"
     }
   ],
   "onlineUsers": [

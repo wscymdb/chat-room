@@ -44,17 +44,23 @@
   }
 
   .header {
-    background: #fff;
-    padding: 0 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid @border-color;
+    background-color: white;
+    padding: 0;
+    border-bottom: 1px solid rgba(5, 5, 5, 0.06);
     height: 64px;
     position: sticky;
     top: 0;
     z-index: 1;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0 16px;
+    }
 
     .ant-avatar {
       background: @hover-color;
@@ -107,194 +113,72 @@
         background: transparent;
       }
     }
+
+    .sider-toggle {
+      border: none;
+      font-size: 18px;
+      margin-right: 16px;
+      color: #8c8c8c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      height: 40px;
+
+      &:hover {
+        color: @primary-color;
+      }
+    }
   }
 
   .sider {
-    background: #fff;
-    border-right: 1px solid @border-color;
-    padding: 16px;
-    width: 240px;
+    background-color: white;
+    border-right: 1px solid rgba(5, 5, 5, 0.06);
+    overflow: hidden;
+    transition: width 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
 
-    .search-container {
-      margin-bottom: 16px;
-
-      .ant-input {
-        background: @hover-color;
-        border: none;
-        border-radius: 8px;
-        color: @text-color;
-        padding: 8px 12px;
-
-        &:hover,
-        &:focus {
-          background: @hover-color;
-          box-shadow: none;
-        }
-
-        &::placeholder {
-          color: @text-secondary;
-        }
-      }
+    .ant-layout-sider-children {
+      width: 280px !important;
+      overflow: hidden;
     }
 
-    .online-users-title {
-      font-size: 16px;
-      font-weight: 500;
-      margin: 16px 0 8px;
-      padding: 0 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    &.ant-layout-sider-collapsed {
+      padding: 0 !important;
+      border-right: none;
 
-      .help-button {
-        color: #8c8c8c;
-        transition: all 0.3s;
-
-        &:hover {
-          color: #1890ff;
-        }
-      }
-    }
-
-    .ant-list-item {
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin-bottom: 4px;
-      transition: all 0.2s;
-
-      &:hover {
-        background: @hover-color;
-      }
-
-      .ant-avatar {
-        background: @hover-color;
-      }
-
-      .ant-typography {
-        color: @text-color;
+      .ant-layout-sider-children {
+        overflow: hidden;
       }
     }
   }
 
-  .content {
-    flex: 1;
-    padding: 24px;
-    overflow-y: auto;
-    background: @background-color;
-    position: relative;
-    padding-bottom: 100px;
+  .online-users-container {
+    height: 100%;
     display: flex;
     flex-direction: column;
+    padding: 0;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 100px;
     align-items: center;
 
-    .messages-container {
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
-
-      .message-date {
-        text-align: center;
-        margin: 24px 0;
-        color: @text-secondary;
-        font-size: 12px;
-        position: relative;
-
-        &::before,
-        &::after {
-          content: "";
-          position: absolute;
-          top: 50%;
-          width: 100px;
-          height: 1px;
-          background: @border-color;
-        }
-
-        &::before {
-          right: 60%;
-        }
-
-        &::after {
-          left: 60%;
-        }
-      }
+    /* 隐藏滚动条 - Webkit浏览器 (Chrome, Safari) */
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-    .input-container {
-      height: 62px;
-      width: 800px;
-      border-radius: 8px;
-      padding: 0;
-      border: 1px solid @border-color;
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-32%);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-      transition: all 0.2s;
+    /* Firefox */
+    scrollbar-width: none;
 
-      &:hover {
-        border-color: darken(@border-color, 10%);
-      }
-
-      &:focus-within {
-        border-color: @primary-color;
-        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
-      }
-
-      form {
-        display: flex;
-        gap: 0;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-
-        .ant-mentions {
-          flex: 1;
-          height: 100%;
-          background: transparent;
-          border: none;
-          border-radius: 8px 0 0 8px;
-          padding: 5px 16px;
-          resize: none;
-          color: @text-color;
-          font-size: 14px;
-          line-height: 1.5;
-
-          &:hover,
-          &:focus {
-            background: transparent;
-            box-shadow: none;
-          }
-
-          &::placeholder {
-            color: rgba(255, 255, 255, 0.45);
-          }
-        }
-
-        .ant-btn {
-          border-radius: 0 8px 8px 0;
-          padding: 0 20px;
-          height: 100%;
-          background: @primary-color;
-          border: none;
-          color: #fff;
-          font-weight: 500;
-          transition: all 0.2s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            background: darken(@primary-color, 5%);
-          }
-
-          &:disabled {
-            background: @hover-color;
-            color: @text-secondary;
-          }
-        }
-      }
-    }
+    /* IE */
+    -ms-overflow-style: none;
   }
 }
 
@@ -393,28 +277,52 @@
 }
 
 // 深色模式下的样式调整
-[data-theme="dark"] {
-  .help-button {
-    color: #a6a6a6;
-
-    &:hover {
-      color: #1890ff;
-    }
-  }
-
-  .bot-guide-card {
-    background: #1f1f1f;
-  }
-
-  .header-button {
-    color: #d9d9d9;
-
-    &:hover {
-      color: #1890ff;
+:global(.dark) {
+  .chat-room {
+    .sider {
+      background-color: #141414;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    &.header-button-danger:hover {
-      color: #ff7875;
+    .header {
+      background-color: #141414;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+      .sider-toggle {
+        color: #d9d9d9;
+
+        &:hover {
+          color: #1890ff;
+        }
+      }
+    }
+
+    .content {
+      background-color: #000;
+    }
+
+    .help-button {
+      color: #a6a6a6;
+
+      &:hover {
+        color: #1890ff;
+      }
+    }
+
+    .bot-guide-card {
+      background: #1f1f1f;
+    }
+
+    .header-button {
+      color: #d9d9d9;
+
+      &:hover {
+        color: #1890ff;
+      }
+
+      &.header-button-danger:hover {
+        color: #ff7875;
+      }
     }
   }
 }

@@ -1,0 +1,113 @@
+.online-users-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.online-users-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  width: 280px;
+
+  .online-users-icon {
+    font-size: 18px;
+    color: #4f46e5;
+    margin-right: 10px;
+  }
+
+  .online-users-title {
+    margin: 0;
+    font-size: 16px;
+    color: #111827;
+    white-space: nowrap;
+  }
+}
+
+.divider {
+  margin: 0 0 8px 0;
+  width: 280px;
+}
+
+.users-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+  margin-bottom: 10px;
+  width: 280px;
+
+  /* Webkit浏览器 (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE */
+  -ms-overflow-style: none;
+
+  .user-item {
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    margin-bottom: 5px;
+
+    &:hover {
+      background-color: rgba(79, 70, 229, 0.08);
+    }
+
+    .status-badge {
+      .ant-badge-status-dot {
+        width: 8px;
+        height: 8px;
+      }
+    }
+
+    .user-avatar {
+      background-color: #e6e8f0;
+    }
+
+    .username {
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .typing-indicator {
+      font-size: 12px;
+      opacity: 0.7;
+      white-space: nowrap;
+    }
+  }
+}
+
+/* 深色模式样式 */
+:global(.dark) {
+  .online-users-header {
+    .online-users-icon {
+      color: #6366f1;
+    }
+
+    .online-users-title {
+      color: #e5e7eb;
+    }
+  }
+
+  .divider {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .users-list {
+    .user-item {
+      &:hover {
+        background-color: rgba(99, 102, 241, 0.15);
+      }
+
+      .user-avatar {
+        background-color: #374151;
+      }
+    }
+  }
+}

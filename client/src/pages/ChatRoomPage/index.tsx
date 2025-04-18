@@ -1,64 +1,33 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  Layout,
-  Input,
-  Button,
-  List,
-  Avatar,
-  Typography,
-  Space,
-  Badge,
-  Flex,
-  Mentions,
-  Modal,
-  Divider,
-  Card,
-  Tooltip,
-} from "antd";
-import {
-  SendOutlined,
-  LogoutOutlined,
-  UserOutlined,
-  SearchOutlined,
-  SettingOutlined,
-  RobotOutlined,
-  BookOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
-import { useAuth } from "../../contexts/AuthContext";
-import { useSocket } from "../../contexts/SocketContext";
-import { useNavigate } from "react-router-dom";
-import { UserRole } from "../../types/auth";
-import ThemeSwitch from "../../components/ThemeSwitch";
-import Message from "../../components/Message";
+import React, { useState } from "react";
+import { Layout, Button } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSocket } from "@/contexts/SocketContext";
 import axios from "axios";
 import "./index.less";
-import { Message as MessageType } from "../../types/message";
+import { Message as MessageType } from "@/types/message";
+
+// 引入抽取的组件
+import ChatHeader from "@/components/ChatHeader";
+import MessageList from "@/components/MessageList";
+import ChatInput from "@/components/ChatInput";
+import OnlineUserList from "@/components/OnlineUserList";
+import BotHelpModal from "@/components/BotHelpModal";
 
 const { Header, Content, Sider } = Layout;
-const { Text } = Typography;
 
 const ChatRoomPage: React.FC = () => {
   const { user, logout } = useAuth();
   const { messages, onlineUsers, sendMessage, socket, setMessages } =
     useSocket();
-  const navigate = useNavigate();
-  const [newMessage, setNewMessage] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showBotMention, setShowBotMention] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [helpModalVisible, setHelpModalVisible] = useState(false);
+  const [siderCollapsed, setSiderCollapsed] = useState(true);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const toggleSider = () => {
+    setSiderCollapsed(!siderCollapsed);
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSendMessage = (newMessage: string) => {
     if (!newMessage.trim()) return;
 
     if (newMessage.toLowerCase().includes("@bot")) {
@@ -68,7 +37,6 @@ const ChatRoomPage: React.FC = () => {
     } else {
       sendMessage(newMessage);
     }
-    setNewMessage("");
   };
 
   const handleBotMessage = async (message: string) => {
@@ -258,238 +226,48 @@ const ChatRoomPage: React.FC = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && !showBotMention) {
-      e.preventDefault();
-      handleSendMessage(e);
-    }
-  };
-
-  const handleInputChange = (value: string) => {
-    setNewMessage(value);
-    setShowBotMention(value.toLowerCase().includes("@"));
-  };
-
-  const handleSelect = (option: any) => {
-    setNewMessage("@" + option.value + " ");
-    setShowBotMention(false);
-  };
-
-  const mentionOptions = [
-    {
-      value: "bot",
-      label: (
-        <Space>
-          <RobotOutlined />
-          <span>AI助手</span>
-        </Space>
-      ),
-    },
-    {
-      value: "poem",
-      label: (
-        <Space>
-          <BookOutlined />
-          <span>诗词机器人</span>
-          <span style={{ fontSize: "12px", color: "#999" }}>
-            (可输入作者名/关键词)
-          </span>
-        </Space>
-      ),
-    },
-  ];
-
-  const formatDate = (timestamp: string | number) => {
-    const date = new Date(timestamp);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (date.toDateString() === today.toDateString()) {
-      return "今天";
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      return "昨天";
-    } else {
-      return date.toLocaleDateString();
-    }
-  };
-
   return (
     <Layout className="chat-room">
-      <Sider width={320} className="sider">
-        <div className="search-container">
-          <Input
-            placeholder="搜索消息..."
-            prefix={<SearchOutlined />}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <div className="online-users-title">在线用户</div>
-        <List
-          dataSource={onlineUsers}
-          renderItem={(user) => (
-            <List.Item>
-              <Space>
-                <Badge status="success" />
-                <Avatar icon={<UserOutlined />} />
-                <Text>{user.username}</Text>
-                {user.isTyping && (
-                  <Text type="secondary" style={{ fontSize: 12 }}>
-                    正在输入...
-                  </Text>
-                )}
-              </Space>
-            </List.Item>
-          )}
-        />
+      <Sider
+        width={220}
+        className="sider"
+        collapsible
+        collapsed={siderCollapsed}
+        trigger={null}
+        collapsedWidth={0}
+        zeroWidthTriggerStyle={{ display: "none" }}
+      >
+        <OnlineUserList onlineUsers={onlineUsers} />
       </Sider>
       <Layout>
         <Header className="header">
-          <Space>
-            <Avatar icon={<UserOutlined />} />
-            <Text>{user?.username}</Text>
-          </Space>
-          <Space size="middle">
-            <Tooltip title="查看机器人使用指南">
-              <Button
-                type="text"
-                icon={<QuestionCircleOutlined className="header-icon" />}
-                onClick={() => setHelpModalVisible(true)}
-                className="header-button"
-              />
-            </Tooltip>
-            <ThemeSwitch />
-            {(user?.role === UserRole.ADMIN ||
-              user?.role === UserRole.SUPER_ADMIN) && (
-              <Tooltip title="管理设置">
-                <Button
-                  type="text"
-                  icon={<SettingOutlined className="header-icon" />}
-                  onClick={() => navigate("/admin")}
-                  className="header-button"
-                />
-              </Tooltip>
-            )}
-            <Tooltip title="退出登录">
-              <Button
-                type="text"
-                icon={<LogoutOutlined className="header-icon" />}
-                onClick={logout}
-                className="header-button header-button-danger"
-              />
-            </Tooltip>
-          </Space>
+          <div className="header-left">
+            <Button
+              type="text"
+              icon={
+                siderCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+              }
+              onClick={toggleSider}
+              className="sider-toggle"
+            />
+            <ChatHeader
+              username={user?.username}
+              role={user?.role}
+              onLogout={logout}
+              onShowHelp={() => setHelpModalVisible(true)}
+            />
+          </div>
         </Header>
         <Content className="content">
-          <div className="messages-container">
-            {messages
-              .sort((a, b) => a.timestamp - b.timestamp)
-              .map((message, index) => {
-                const showDate =
-                  index === 0 ||
-                  formatDate(message.timestamp) !==
-                    formatDate(messages[index - 1].timestamp);
-
-                return (
-                  <div key={message.id}>
-                    {showDate && (
-                      <div className="message-date">
-                        {formatDate(message.timestamp)}
-                      </div>
-                    )}
-                    <Message
-                      content={message.content}
-                      timestamp={message.timestamp}
-                      username={message.username}
-                      isSelf={message.userId === user?.id}
-                      type={message.type}
-                      tokens={message.tokens}
-                      userId={message.userId}
-                    />
-                  </div>
-                );
-              })}
-            <div ref={messagesEndRef} />
-          </div>
-          <Flex className="input-container">
-            <form onSubmit={handleSendMessage}>
-              <Mentions
-                value={newMessage}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onSelect={handleSelect}
-                placeholder="输入消息，使用@bot呼叫AI助手，@poem呼叫诗词机器人..."
-                options={showBotMention ? mentionOptions : []}
-                style={{ width: "100%", height: "100%" }}
-                prefix="@"
-                split=" "
-              />
-              <Button
-                type="primary"
-                htmlType="submit"
-                icon={<SendOutlined />}
-                disabled={!newMessage.trim()}
-              >
-                发送
-              </Button>
-            </form>
-          </Flex>
+          <MessageList messages={messages} currentUserId={user?.id} />
+          <ChatInput onSendMessage={handleSendMessage} />
         </Content>
       </Layout>
 
-      {/* 帮助模态框 */}
-      <Modal
-        title="聊天机器人使用指南"
-        open={helpModalVisible}
-        onCancel={() => setHelpModalVisible(false)}
-        footer={[
-          <Button
-            key="close"
-            type="primary"
-            onClick={() => setHelpModalVisible(false)}
-          >
-            知道了
-          </Button>,
-        ]}
-        width={600}
-      >
-        <Divider orientation="left">AI助手</Divider>
-        <p>
-          <strong>使用方法：</strong>在消息框中输入 @bot 加上您的问题
-        </p>
-        <p>
-          <strong>示例：</strong>@bot 今天天气怎么样？
-        </p>
-
-        <Divider orientation="left">诗词机器人</Divider>
-        <Card title="诗词机器人使用指南" className="bot-guide-card">
-          <p>
-            <strong>基本用法：</strong>
-          </p>
-          <ul>
-            <li>
-              <strong>随机推荐诗词：</strong>输入 @poem 并发送
-            </li>
-            <li>
-              <strong>推荐特定作者的诗词：</strong>输入 @poem 李白
-            </li>
-            <li>
-              <strong>根据主题查找诗词：</strong>输入 @poem 思乡
-            </li>
-          </ul>
-          <p>
-            <strong>示例：</strong>
-          </p>
-          <ul>
-            <li>@poem （随机推荐一首诗词）</li>
-            <li>@poem 杜甫 （推荐杜甫的诗词）</li>
-            <li>@poem 春天 （推荐与春天相关的诗词）</li>
-            <li>@poem 李白的诗 （推荐李白的诗词）</li>
-          </ul>
-          <p>每首诗词都会包含诗名、作者、诗句和详细解析。</p>
-        </Card>
-      </Modal>
+      <BotHelpModal
+        visible={helpModalVisible}
+        onClose={() => setHelpModalVisible(false)}
+      />
     </Layout>
   );
 };
