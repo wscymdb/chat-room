@@ -383,31 +383,33 @@ const ChatRoomPage: React.FC = () => {
         </Header>
         <Content className="content">
           <div className="messages-container">
-            {messages.map((message, index) => {
-              const showDate =
-                index === 0 ||
-                formatDate(message.timestamp) !==
-                  formatDate(messages[index - 1].timestamp);
+            {messages
+              .sort((a, b) => a.timestamp - b.timestamp)
+              .map((message, index) => {
+                const showDate =
+                  index === 0 ||
+                  formatDate(message.timestamp) !==
+                    formatDate(messages[index - 1].timestamp);
 
-              return (
-                <div key={message.id}>
-                  {showDate && (
-                    <div className="message-date">
-                      {formatDate(message.timestamp)}
-                    </div>
-                  )}
-                  <Message
-                    content={message.content}
-                    timestamp={message.timestamp}
-                    username={message.username}
-                    isSelf={message.userId === user?.id}
-                    type={message.type}
-                    tokens={message.tokens}
-                    userId={message.userId}
-                  />
-                </div>
-              );
-            })}
+                return (
+                  <div key={message.id}>
+                    {showDate && (
+                      <div className="message-date">
+                        {formatDate(message.timestamp)}
+                      </div>
+                    )}
+                    <Message
+                      content={message.content}
+                      timestamp={message.timestamp}
+                      username={message.username}
+                      isSelf={message.userId === user?.id}
+                      type={message.type}
+                      tokens={message.tokens}
+                      userId={message.userId}
+                    />
+                  </div>
+                );
+              })}
             <div ref={messagesEndRef} />
           </div>
           <Flex className="input-container">

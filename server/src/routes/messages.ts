@@ -50,8 +50,11 @@ messageRoutes.get("/", async (req, res) => {
       );
     }
 
-    // 将消息倒序排列
-    messages = messages.reverse();
+    // 按时间戳正序排序
+    messages = messages.sort(
+      (a: Message, b: Message) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
 
     res.json(messages);
   } catch (error) {
