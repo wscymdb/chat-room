@@ -9,6 +9,7 @@ import {
 import { UserRole } from "@/types/auth";
 import ThemeSwitch from "../ThemeSwitch";
 import { useNavigate } from "react-router-dom";
+import BackgroundSelector, { GradientType } from "../BackgroundSelector";
 import "./index.less";
 
 const { Text } = Typography;
@@ -18,6 +19,8 @@ interface ChatHeaderProps {
   role?: UserRole;
   onLogout: () => void;
   onShowHelp: () => void;
+  currentBackground?: GradientType;
+  onBackgroundChange?: (type: GradientType) => void;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
@@ -25,6 +28,8 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   role,
   onLogout,
   onShowHelp,
+  currentBackground,
+  onBackgroundChange,
 }) => {
   const navigate = useNavigate();
 
@@ -44,6 +49,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
           />
         </Tooltip>
         <ThemeSwitch />
+        {currentBackground && onBackgroundChange && (
+          <BackgroundSelector
+            currentBackground={currentBackground}
+            onChange={onBackgroundChange}
+          />
+        )}
         {(role === UserRole.ADMIN || role === UserRole.SUPER_ADMIN) && (
           <Tooltip title="管理设置">
             <Button

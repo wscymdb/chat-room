@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Button } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,8 +13,18 @@ import MessageList from "@/components/MessageList";
 import ChatInput from "@/components/ChatInput";
 import OnlineUserList from "@/components/OnlineUserList";
 import BotHelpModal from "@/components/BotHelpModal";
+import BackgroundSelector, {
+  GradientType,
+  GRADIENT_PRESETS,
+} from "@/components/BackgroundSelector";
 
 const { Header, Content, Sider } = Layout;
+
+// 获取本地存储的背景设置，如果没有则使用默认值
+const getStoredBackground = (): GradientType => {
+  const stored = localStorage.getItem("chat-background");
+  return (stored as GradientType) || "default";
+};
 
 const ChatRoomPage: React.FC = () => {
   const { user, logout } = useAuth();
@@ -22,6 +32,27 @@ const ChatRoomPage: React.FC = () => {
     useSocket();
   const [helpModalVisible, setHelpModalVisible] = useState(false);
   const [siderCollapsed, setSiderCollapsed] = useState(true);
+
+  // 背景相关状态
+  const [currentBackground, setCurrentBackground] = useState<GradientType>(
+    getStoredBackground()
+  );
+  const [backgroundStyle, setBackgroundStyle] = useState({});
+
+  // 切换背景
+  const handleBackgroundChange = (type: GradientType) => {
+    setCurrentBackground(type);
+    localStorage.setItem("chat-background", type);
+  };
+
+  // 当背景类型改变时，更新背景样式
+  useEffect(() => {
+    const preset = GRADIENT_PRESETS[currentBackground];
+    setBackgroundStyle({
+      "--primary-gradient": preset.gradient,
+      "--bg-opacity": preset.opacity,
+    } as React.CSSProperties);
+  }, [currentBackground]);
 
   const toggleSider = () => {
     setSiderCollapsed(!siderCollapsed);
@@ -227,7 +258,7 @@ const ChatRoomPage: React.FC = () => {
   };
 
   return (
-    <Layout className="chat-room">
+    <Layout className="chat-room" style={backgroundStyle}>
       <Sider
         width={220}
         className="sider"
@@ -255,6 +286,12 @@ const ChatRoomPage: React.FC = () => {
               role={user?.role}
               onLogout={logout}
               onShowHelp={() => setHelpModalVisible(true)}
+            />
+          </div>
+          <div className="header-right">
+            <BackgroundSelector
+              currentBackground={currentBackground}
+              onChange={handleBackgroundChange}
             />
           </div>
         </Header>

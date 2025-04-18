@@ -30,6 +30,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  --primary-gradient: @primary-gradient;
+  --bg-opacity: 0.05;
+  transition: background 0.5s ease;
 
   &::before {
     content: "";
@@ -38,9 +41,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: @primary-gradient;
-    opacity: 0.05;
+    background: var(--primary-gradient, @primary-gradient);
+    opacity: var(--bg-opacity, 0.05);
     z-index: 0;
+    transition: opacity 0.5s ease, background 0.5s ease;
   }
 
   .header {
@@ -54,12 +58,19 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     .header-left {
       display: flex;
       align-items: center;
-      width: 100%;
+      flex: 1;
       padding: 0 16px;
+    }
+
+    .header-right {
+      padding-right: 16px;
+      display: flex;
+      align-items: center;
     }
 
     .ant-avatar {
