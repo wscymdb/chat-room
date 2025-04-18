@@ -2,9 +2,11 @@
 
 echo "开始构建..."
 
-# 1. 清空 server/dist 目录
-echo "清空 server/dist 目录..."
+# 1. 清空所有dist目录
+echo "清空所有dist目录..."
 rm -rf server/dist
+rm -rf client/dist
+rm -rf dist
 
 # 2. 安装依赖
 echo "安装根目录依赖..."
@@ -28,21 +30,33 @@ echo "构建服务器..."
 cd ../server
 npm run build
 
-# 5. 复制客户端构建到服务器的 public 目录
-echo "复制客户端构建文件到服务器..."
-rm -rf dist/public
-mkdir -p dist/public
-cp -r ../client/dist/* dist/public/
-
-# 6. 复制必要文件到 dist 目录
-echo "复制必要文件到 dist 目录..."
+# 5. 在根目录创建dist目录
+echo "在根目录创建dist目录..."
 cd ..
-cp server/package.json server/dist/
-mkdir -p server/dist/data
-cp -r server/data/* server/dist/data/
+mkdir -p dist
+mkdir -p dist/public
+mkdir -p dist/data
 
-# 7. 复制环境变量文件
-echo "复制环境变量文件到 dist 目录..."
-cp .env server/dist/
+# 6. 复制客户端构建到根目录的dist/public目录
+echo "复制客户端构建文件到根目录dist/public..."
+cp -r client/dist/* dist/public/
 
-echo "构建完成！" 
+# 7. 复制服务器构建到根目录的dist目录
+echo "复制服务器构建文件到根目录dist..."
+cp -r server/dist/* dist/
+
+# 8. 复制必要文件到根目录的dist目录
+echo "复制必要文件到根目录dist目录..."
+cp server/package.json dist/
+cp -r server/data/* dist/data/
+
+# 9. 复制环境变量文件
+echo "复制环境变量文件到根目录dist目录..."
+cp .env dist/
+
+# 10. 清理临时构建目录
+echo "清理临时构建目录..."
+rm -rf server/dist
+rm -rf client/dist
+
+echo "构建完成！所有文件已打包到根目录的dist目录中。" 

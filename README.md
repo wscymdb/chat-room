@@ -176,38 +176,52 @@ CLIENT_URL=http://your-server-ip
 VITE_API_URL=http://your-server-ip:3000
 ```
 
-2. 构建前端项目
+2. 构建项目
+
+在根目录一键构建整个项目：
 
 ```bash
-cd client
+# 在项目根目录执行
 npm run build
 ```
 
-3. 将生成的 `dist` 目录复制到服务器对应位置
+这个命令会：
+
+- 清除所有的 `dist` 目录（包括根目录、client 和 server 中的）
+- 构建前端和后端代码
+- 将所有构建结果整合到根目录的 `dist` 文件夹中
+- 自动复制所需的配置文件和数据
+
+3. 部署
+
+构建完成后，最终的部署文件位于项目根目录的 `dist` 目录中。这个目录包含了完整的应用程序，包括前端和后端代码。
+
+客户端代码会被放置在 `dist/public` 目录中，可以直接通过服务器提供服务。
+
+4. 将根目录的 `dist` 目录复制到服务器对应位置
 
 ### 后端部署
 
 1. 确保服务器已安装 Node.js (建议 v16+)
-2. 复制项目到服务器
-3. 安装依赖：
+2. 复制项目根目录下的 `dist` 目录到服务器
+3. 在服务器上进入 `dist` 目录并安装依赖：
 
 ```bash
-cd server
+cd dist
 npm install --production
 ```
 
 4. 启动服务器：
 
 ```bash
-cd server
-npm start
+node index.js
 ```
 
 建议使用 PM2 等进程管理工具以确保服务持续运行：
 
 ```bash
 npm install -g pm2
-pm2 start src/index.js --name chat-server
+pm2 start index.js --name chat-server
 ```
 
 ## 常见问题解决
