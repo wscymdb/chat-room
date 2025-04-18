@@ -22,18 +22,11 @@ import {
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./index.less";
+import { promptPresetsService, PromptPreset } from "../../../services";
 
 const { Title, Text, Link } = Typography;
 const { TextArea } = Input;
-
-// 预设提示词接口
-interface PromptPreset {
-  id: string;
-  name: string;
-  content: string;
-}
 
 const PromptPresetsPage: React.FC = () => {
   const [presets, setPresets] = useState<PromptPreset[]>([]);
@@ -50,10 +43,8 @@ const PromptPresetsPage: React.FC = () => {
   const fetchPresets = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/prompt-presets`
-      );
-      setPresets(response.data || []);
+      const data = await promptPresetsService.getAllPresets();
+      setPresets(data || []);
     } catch (error) {
       console.error("获取预设失败:", error);
       message.error("获取预设失败");
@@ -102,24 +93,23 @@ const PromptPresetsPage: React.FC = () => {
       if (editingPreset) {
         // 编辑现有预设
         setLoading(true);
-        const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/prompt-presets/${
-            editingPreset.id
-          }`,
-          values
+        const updatedPreset = await promptPresetsService.updatePreset(
+          editingPreset.id,
+          values.name,
+          values.content
         );
         setPresets((prev) =>
-          prev.map((p) => (p.id === editingPreset.id ? response.data : p))
+          prev.map((p) => (p.id === editingPreset.id ? updatedPreset : p))
         );
         message.success("预设更新成功");
       } else {
         // 添加新预设
         setLoading(true);
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/prompt-presets`,
-          values
+        const newPreset = await promptPresetsService.addPreset(
+          values.name,
+          values.content
         );
-        setPresets((prev) => [...prev, response.data]);
+        setPresets((prev) => [...prev, newPreset]);
         message.success("预设添加成功");
       }
 
@@ -135,9 +125,7 @@ const PromptPresetsPage: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       setLoading(true);
-      await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/prompt-presets/${id}`
-      );
+      await promptPresetsService.deletePreset(id);
       setPresets((prev) => prev.filter((p) => p.id !== id));
       message.success("预设删除成功");
     } catch (error) {

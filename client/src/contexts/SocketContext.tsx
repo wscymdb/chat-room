@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { useAuth } from "./AuthContext";
 import { Message, User } from "../types/message";
+import { createSocketConnection } from "../services/socket";
 
 interface SocketContextType {
   messages: Message[];
@@ -24,18 +25,10 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!user) return;
 
-    const newSocket = io(import.meta.env.VITE_API_URL, {
-      query: {
-        userId: user.id,
-        username: user.username,
-        // avatar: user.avatar,
-      },
-      transports: ["websocket", "polling"],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      timeout: 20000,
+    const newSocket = createSocketConnection({
+      userId: user.id,
+      username: user.username,
+      // avatar: user.avatar,
     });
 
     setSocket(newSocket);

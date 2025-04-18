@@ -41,7 +41,7 @@
 - AI 聊天机器人 (DeepSeek)
   - 通过 @bot 指令调用
   - 支持多轮对话和上下文理解
-  - 「思考中」状态显示
+  - "思考中"状态显示
   - Token 消耗统计
 - 增强的消息展示
   - Markdown 格式支持
@@ -66,7 +66,7 @@
   - 自动提取诗名、作者、诗句和解析
   - 美观的诗词展示样式
   - 深色/浅色主题自适应
-  - 「思考中」状态显示
+  - "思考中"状态显示
   - Token 消耗统计
 
 ## 技术栈
@@ -118,14 +118,27 @@ npm install
 在项目根目录下创建 `.env` 文件：
 
 ```bash
-# 前端配置
-VITE_API_URL=http://localhost:3000
-
-# 后端配置
+# 服务器配置
 PORT=3000
 JWT_SECRET=your_jwt_secret
+DATA_FILE_PATH=./data/data.json
+
+# API配置
 DEEPSEEK_API_KEY=your_deepseek_api_key
+
+# 环境配置
+# 开发环境（开发时使用）
+NODE_ENV=development
+CLIENT_URL=http://localhost
+VITE_API_URL=http://localhost:3000
+
+# 生产环境（部署时使用，需要将上面的开发环境配置注释，并取消下面的注释）
+# NODE_ENV=production
+# CLIENT_URL=http://your-server-ip
+# VITE_API_URL=http://your-server-ip:3000
 ```
+
+⚠️ **重要提示**：环境变量替换发生在构建过程中，而不是运行时。在执行构建命令之前必须先修改环境变量文件。
 
 4. 启动应用
 
@@ -141,6 +154,80 @@ npm run dev
 # 可以选择这里一键启动
 npm run dev
 ```
+
+## 部署指南
+
+### 前端部署
+
+1. 配置生产环境变量
+
+**⚠️ 在打包前**，修改项目根目录下的 `.env` 文件，注释掉开发环境配置，取消对生产环境配置的注释：
+
+```bash
+# 环境配置
+# 开发环境（开发时使用）
+# NODE_ENV=development
+# CLIENT_URL=http://localhost
+# VITE_API_URL=http://localhost:3000
+
+# 生产环境（部署时使用）
+NODE_ENV=production
+CLIENT_URL=http://your-server-ip
+VITE_API_URL=http://your-server-ip:3000
+```
+
+2. 构建前端项目
+
+```bash
+cd client
+npm run build
+```
+
+3. 将生成的 `dist` 目录复制到服务器对应位置
+
+### 后端部署
+
+1. 确保服务器已安装 Node.js (建议 v16+)
+2. 复制项目到服务器
+3. 安装依赖：
+
+```bash
+cd server
+npm install --production
+```
+
+4. 启动服务器：
+
+```bash
+cd server
+npm start
+```
+
+建议使用 PM2 等进程管理工具以确保服务持续运行：
+
+```bash
+npm install -g pm2
+pm2 start src/index.js --name chat-server
+```
+
+## 常见问题解决
+
+### 前端 API 连接错误
+
+如果部署后遇到类似 `POST http://localhost:3000/api/auth/login net::ERR_CONNECTION_REFUSED` 的错误，表示前端代码仍在尝试连接 localhost 而非生产环境服务器。
+
+解决方法：
+
+1. 确保在**打包前**已经修改了`.env`文件中的环境变量
+2. 执行新的构建：`npm run build -- --mode production`
+3. 重新部署生成的 dist 目录
+
+### Socket 连接问题
+
+如果聊天功能不工作，可能是 Socket 连接问题。检查浏览器控制台是否有 Socket 连接错误，确保:
+
+1. 服务器防火墙允许 3000 端口访问
+2. Socket 连接 URL 配置正确
 
 ## 版本历史
 
@@ -241,5 +328,3 @@ npm run dev
 MIT License - 详见 LICENSE 文件
 
 ---
-
-> 💡 这个项目是使用 [Cursor](https://cursor.sh/) AI 辅助开发的。Cursor 是一个强大的 AI 编程助手，帮助开发者更高效地编写代码。
