@@ -18,7 +18,11 @@ userRoutes.get(
       const sanitizedUsers = data.users.map(
         ({ password, ...user }: User) => user
       );
-      res.json(sanitizedUsers);
+
+      // 将用户列表倒序排列
+      const reversedUsers = [...sanitizedUsers].reverse();
+
+      res.json(reversedUsers);
     } catch (error) {
       res.status(500).json({ message: "获取用户列表失败" });
     }

@@ -11,11 +11,15 @@ import {
   Input,
   Row,
   Col,
+  Select,
 } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./index.less";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
 interface BotConfig {
   temperature: number;
@@ -24,6 +28,13 @@ interface BotConfig {
   frequencyPenalty: number;
   presencePenalty: number;
   systemPrompt: string;
+}
+
+// 预设提示词接口
+interface PromptPreset {
+  id: string;
+  name: string;
+  content: string;
 }
 
 const defaultConfig: BotConfig = {
@@ -40,9 +51,13 @@ const SettingsPage: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [promptLoading, setPromptLoading] = useState(false);
+  const [presets, setPresets] = useState<PromptPreset[]>([]);
+  const [loadingPresets, setLoadingPresets] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchConfig();
+    fetchPresets();
   }, []);
 
   const fetchConfig = async () => {
@@ -54,6 +69,42 @@ const SettingsPage: React.FC = () => {
     } catch (error) {
       message.error("获取配置失败");
       form.setFieldsValue(defaultConfig);
+    }
+  };
+
+  const fetchPresets = async () => {
+    try {
+      setLoadingPresets(true);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/prompt-presets`
+      );
+      setPresets(response.data || []);
+    } catch (error) {
+      console.error("获取预设失败:", error);
+      message.error("获取预设失败");
+      // 如果API失败，使用默认预设
+      setPresets([
+        {
+          id: "1",
+          name: "通用助手",
+          content:
+            "你是一个专业的AI助手，请用简洁明了的语言回答用户的问题。回答要准确、专业，同时保持友好和易于理解。如果遇到不确定的问题，请诚实地告诉用户。",
+        },
+        {
+          id: "2",
+          name: "客服助手",
+          content:
+            "你是一个专业的客服助手，你的任务是帮助用户解决产品使用中遇到的问题。保持友好、耐心的态度，尽可能提供详细的解决方案。对于无法解决的问题，请引导用户联系人工客服。",
+        },
+        {
+          id: "3",
+          name: "技术专家",
+          content:
+            "你是一个技术领域的专家，擅长解答编程、网络、硬件等技术问题。请提供专业、准确的技术解答，必要时可以提供代码示例或步骤指导。保持专业性的同时，确保回答通俗易懂。",
+        },
+      ]);
+    } finally {
+      setLoadingPresets(false);
     }
   };
 
@@ -79,7 +130,9 @@ const SettingsPage: React.FC = () => {
 
   const generatePrompt = async () => {
     try {
+      // 获取当前内容
       const currentPrompt = form.getFieldValue("systemPrompt") || "";
+
       setPromptLoading(true);
 
       console.log("当前提示词:", currentPrompt);
@@ -92,8 +145,12 @@ const SettingsPage: React.FC = () => {
       console.log("API响应:", response.data);
 
       if (response.data && response.data.prompt) {
-        form.setFieldsValue({ systemPrompt: response.data.prompt });
-        console.log("设置新提示词:", response.data.prompt);
+        const newPrompt = response.data.prompt;
+
+        // 更新编辑器内容
+        form.setFieldsValue({ systemPrompt: newPrompt });
+
+        console.log("设置新提示词:", newPrompt);
         message.success("已生成系统提示词建议");
       } else {
         message.error("生成系统提示词失败");
@@ -111,6 +168,21 @@ const SettingsPage: React.FC = () => {
     if (e.key === "Tab" && !e.shiftKey && !promptLoading) {
       e.preventDefault(); // 阻止默认Tab行为
       generatePrompt();
+    }
+  };
+
+  // 处理预设选择
+  const handlePresetChange = (presetId: string) => {
+    if (presetId === "manage") {
+      // 导航到预设管理页面
+      navigate("/admin/prompt-presets");
+      return;
+    }
+
+    const selectedPreset = presets.find((preset) => preset.id === presetId);
+    if (selectedPreset) {
+      form.setFieldsValue({ systemPrompt: selectedPreset.content });
+      message.success(`已应用"${selectedPreset.name}"预设`);
     }
   };
 
@@ -216,31 +288,57 @@ const SettingsPage: React.FC = () => {
 
             <div className="config-section">
               <Title level={4}>系统提示词</Title>
-              <Form.Item
-                label="系统提示"
-                name="systemPrompt"
-                tooltip="设置 AI 助手的基本角色和回答风格。按Tab键可自动补全提示词。"
-                rules={[{ required: true, message: "请输入系统提示词" }]}
-              >
-                <Input.TextArea
-                  rows={4}
-                  placeholder="例如：你是一个专业的AI助手，请用简洁明了的语言回答用户的问题。按Tab键补全..."
-                  onKeyDown={handleKeyDown}
-                />
+
+              <Form.Item label="应用预设" tooltip="选择预设的系统提示词模板">
+                <Select
+                  placeholder="选择预设提示词"
+                  style={{ width: "100%" }}
+                  onChange={handlePresetChange}
+                  loading={loadingPresets}
+                  dropdownRender={(menu) => (
+                    <>
+                      {menu}
+                      <Divider style={{ margin: "8px 0" }} />
+                      <Button
+                        type="text"
+                        icon={<SettingOutlined />}
+                        style={{ width: "100%", textAlign: "left" }}
+                        onClick={() => navigate("/admin/prompt-presets")}
+                      >
+                        管理预设提示词
+                      </Button>
+                    </>
+                  )}
+                >
+                  {presets.map((preset) => (
+                    <Option key={preset.id} value={preset.id}>
+                      {preset.name}
+                    </Option>
+                  ))}
+                </Select>
               </Form.Item>
+
+              <Form.Item
+                label={
+                  <>
+                    <span>系统提示词</span>
+                    <span className="description">
+                      设置系统提示词，用来定义AI助手的行为
+                    </span>
+                  </>
+                }
+                name="systemPrompt"
+              >
+                <Input.TextArea rows={10} onKeyDown={handleKeyDown} />
+              </Form.Item>
+
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
                   marginBottom: "16px",
                 }}
               >
-                <span
-                  className="text-muted"
-                  style={{ fontSize: "12px", color: "#888" }}
-                >
-                  提示: 按Tab键可快速补全提示词
-                </span>
                 <Button
                   type="default"
                   onClick={generatePrompt}

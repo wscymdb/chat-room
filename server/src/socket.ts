@@ -55,7 +55,11 @@ export const setupSocket = (io: Server) => {
       avatar: msg.avatar || "",
       type: msg.type || "user",
     }));
-    socket.emit("messages", formattedMessages);
+
+    // 将消息倒序排列
+    const reversedMessages = [...formattedMessages].reverse();
+
+    socket.emit("messages", reversedMessages);
 
     // 更新在线用户
     const currentUser = {

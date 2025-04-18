@@ -6,6 +6,7 @@ import botRoutes from "./bot";
 import poemBotRoutes from "./poemBot";
 import botConfigRoutes from "./botConfig";
 import promptGenerateRoutes from "./promptGenerate";
+import promptPresetsRoutes from "./promptPresets";
 
 export const setupRoutes = (app: any) => {
   const router = Router();
@@ -18,6 +19,7 @@ export const setupRoutes = (app: any) => {
   router.use("/poemBot", poemBotRoutes);
   router.use("/bot-config", botConfigRoutes);
   router.use("/generate-prompt", promptGenerateRoutes);
+  router.use("/prompt-presets", promptPresetsRoutes);
 
   app.use("/api", router);
 };

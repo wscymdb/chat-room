@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, Typography, Space, Divider } from "antd";
 import {
   UserOutlined,
   MessageOutlined,
   SettingOutlined,
   LogoutOutlined,
   ArrowLeftOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -13,6 +14,7 @@ import ThemeSwitch from "../../components/ThemeSwitch";
 import "./index.less";
 
 const { Header, Sider, Content } = Layout;
+const { Link: TextLink } = Typography;
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -41,6 +43,11 @@ const AdminLayout: React.FC = () => {
       icon: <SettingOutlined />,
       label: <Link to="/admin/settings">系统设置</Link>,
     },
+    {
+      key: "/admin/prompt-presets",
+      icon: <FileTextOutlined />,
+      label: <Link to="/admin/prompt-presets">提示词预设</Link>,
+    },
   ];
 
   return (
@@ -58,16 +65,14 @@ const AdminLayout: React.FC = () => {
           <div className="logo">聊天室管理系统</div>
         </div>
         <div className="user-info">
-          <ThemeSwitch />
-          <span>欢迎，{user?.username}</span>
-          <Button
-            type="text"
-            icon={<LogoutOutlined />}
-            onClick={handleLogout}
-            className="logout-button"
-          >
-            退出
-          </Button>
+          <Space split={<Divider type="vertical" />}>
+            <ThemeSwitch />
+            <span>欢迎，{user?.username}</span>
+            <TextLink onClick={handleLogout} className="logout-button">
+              <LogoutOutlined style={{ marginRight: 5 }} />
+              退出
+            </TextLink>
+          </Space>
         </div>
       </Header>
       <Layout>

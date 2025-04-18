@@ -4,21 +4,28 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// 获取 data.json 的路径
-const getDataFilePath = () => {
+// 获取数据文件的路径
+export const getDataFilePath = (fileName: string = "data.json") => {
   const envPath = process.env.DATA_FILE_PATH;
+  let basePath;
+
   if (envPath) {
-    // 如果是绝对路径，直接返回
+    // 如果是绝对路径，直接使用
     if (path.isAbsolute(envPath)) {
-      return envPath;
+      basePath = path.dirname(envPath);
+    } else {
+      // 如果是相对路径，转换为相对于项目根目录的路径
+      basePath = path.join(process.cwd(), path.dirname(envPath));
     }
-    // 如果是相对路径，转换为相对于项目根目录的路径
-    return path.join(process.cwd(), envPath);
+  } else {
+    // 默认路径
+    basePath = path.join(process.cwd(), "data");
   }
-  // 默认路径
-  return path.join(process.cwd(), "data", "data.json");
+
+  return path.join(basePath, fileName);
 };
 
+// 用于data.json的默认路径
 const DATA_FILE_PATH = getDataFilePath();
 
 export const readData = async () => {

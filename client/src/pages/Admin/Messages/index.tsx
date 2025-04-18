@@ -10,6 +10,7 @@ import {
   Select,
   Form,
   Modal,
+  Divider,
 } from "antd";
 import {
   MessageOutlined,
@@ -24,7 +25,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { UserRole } from "../../../types/auth";
 import "./index.less";
 
-const { Title, Text } = Typography;
+const { Title, Text, Link } = Typography;
 const { Option } = Select;
 
 interface Message {
@@ -171,12 +172,9 @@ const MessagesPage: React.FC = () => {
       key: "action",
       width: 100,
       render: (_: any, record: Message) => (
-        <Button
-          type="text"
-          danger
-          icon={<DeleteOutlined />}
-          onClick={() => handleDeleteMessage(record.id)}
-        />
+        <Link type="danger" onClick={() => handleDeleteMessage(record.id)}>
+          <DeleteOutlined />
+        </Link>
       ),
     },
   ];
@@ -228,7 +226,7 @@ const MessagesPage: React.FC = () => {
                   </Select>
                 </Form.Item>
                 <Form.Item>
-                  <Space>
+                  <Space split={<Divider type="vertical" />}>
                     <Button type="primary" htmlType="submit">
                       搜索
                     </Button>

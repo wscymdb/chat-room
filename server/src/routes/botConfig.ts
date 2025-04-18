@@ -1,10 +1,12 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
+import { getDataFilePath } from "../utils/fileStorage";
 
 const router = express.Router();
 
-const CONFIG_FILE = path.join(__dirname, "../../config/bot-config.json");
+const CONFIG_FILE = getDataFilePath("bot-config.json");
+console.log("机器人配置文件路径:", CONFIG_FILE);
 
 // 确保配置文件存在
 if (!fs.existsSync(CONFIG_FILE)) {
@@ -17,6 +19,13 @@ if (!fs.existsSync(CONFIG_FILE)) {
     systemPrompt:
       "你是一个专业的AI助手，请用简洁明了的语言回答用户的问题。回答要准确、专业，同时保持友好和易于理解。如果遇到不确定的问题，请诚实地告诉用户。",
   };
+
+  // 创建数据目录（如果不存在）
+  const dataDir = path.dirname(CONFIG_FILE);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(defaultConfig, null, 2));
 }
 

@@ -9,6 +9,7 @@ import {
   message,
   Space,
   Typography,
+  Divider,
 } from "antd";
 import {
   UserAddOutlined,
@@ -20,7 +21,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { User, UserRole, ROLE_NAMES } from "../../../types/auth";
 import "./index.less";
 
-const { Title } = Typography;
+const { Title, Link } = Typography;
 const { Option } = Select;
 
 const UsersPage: React.FC = () => {
@@ -143,20 +144,17 @@ const UsersPage: React.FC = () => {
         }
 
         return (
-          <Space>
-            <Button
-              type="link"
-              icon={<EditOutlined />}
-              onClick={() => handleEditUser(record)}
-            >
-              编辑
-            </Button>
+          <Space split={<Divider type="vertical" />} size="small">
+            <Link onClick={() => handleEditUser(record)}>
+              <Space>
+                <EditOutlined />
+                编辑
+              </Space>
+            </Link>
             {(user?.role === UserRole.SUPER_ADMIN ||
               (user?.role === UserRole.ADMIN && record.id === user.id)) && (
-              <Button
-                type="link"
-                danger
-                icon={<DeleteOutlined />}
+              <Link
+                type="danger"
                 onClick={() => {
                   Modal.confirm({
                     title: "确认删除",
@@ -167,8 +165,11 @@ const UsersPage: React.FC = () => {
                   });
                 }}
               >
-                删除
-              </Button>
+                <Space>
+                  <DeleteOutlined />
+                  删除
+                </Space>
+              </Link>
             )}
           </Space>
         );

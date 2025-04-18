@@ -7,6 +7,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import UsersPage from "../pages/Admin/Users";
 import MessagesPage from "../pages/Admin/Messages";
 import SettingsPage from "../pages/Admin/Settings";
+import PromptPresetsPage from "../pages/Admin/PromptPresets";
 import PrivateRoute from "../components/PrivateRoute";
 
 const AppRoutes: React.FC = () => {
@@ -33,6 +34,7 @@ const AppRoutes: React.FC = () => {
         <Route path="users" element={<UsersPage />} />
         <Route path="messages" element={<MessagesPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="prompt-presets" element={<PromptPresetsPage />} />
         <Route path="" element={<Navigate to="users" replace />} />
       </Route>
       <Route path="/" element={<Navigate to="/chat" replace />} />

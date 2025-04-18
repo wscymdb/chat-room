@@ -8,16 +8,19 @@
     "start:client": "cd client && npm run dev",
     "start:server": "cd server && npm run dev",
     "install:all": "npm install --legacy-peer-deps && cd client && npm install --legacy-peer-deps && cd ../server && npm install --legacy-peer-deps",
-    "remove":"cd server && rm -rf dist",
+    "remove": "cd server && rm -rf dist",
     "build": "chmod +x ./build.sh && ./build.sh",
     "build:server": "cd server && npm run build",
     "build:client": "cd client && npm run build",
-    "copy:client": "mkdir -p server/dist/public && cp -r client/dist/* server/dist/public/ && mkdir -p server/dist/data && cp server/data/data.json server/dist/data/ && cp server/.env server/dist/ && cp server/package.json server/dist/",
+    "copy:client": "mkdir -p server/dist/public && cp -r client/dist/* server/dist/public/ && mkdir -p server/dist/data && cp -r server/data/* server/dist/data/ && cp server/.env server/dist/ && cp server/package.json server/dist/",
     "start:prod": "cd server && npm run start",
     "build:ci": "chmod +x ./build.sh && ./build.sh ci"
   },
   "devDependencies": {
     "@types/uuid": "^10.0.0",
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "react-quill": "^2.0.0"
   }
 }

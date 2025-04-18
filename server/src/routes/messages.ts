@@ -50,6 +50,9 @@ messageRoutes.get("/", async (req, res) => {
       );
     }
 
+    // 将消息倒序排列
+    messages = messages.reverse();
+
     res.json(messages);
   } catch (error) {
     console.error("获取消息失败:", error);
