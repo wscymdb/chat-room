@@ -35,7 +35,7 @@ export const GRADIENT_PRESETS = {
     gradient: "linear-gradient(135deg, #fb7185 0%, #f472b6 100%)",
     opacity: 0.05,
   },
-};
+} as const;
 
 export type GradientType = keyof typeof GRADIENT_PRESETS;
 
@@ -57,7 +57,17 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
               currentBackground === key ? "active" : ""
             }`}
             style={{ background: value.gradient }}
-            onClick={() => onChange(key as GradientType)}
+            onClick={() => {
+              onChange(key as GradientType);
+              document.documentElement.style.setProperty(
+                "--primary-gradient",
+                value.gradient
+              );
+              document.documentElement.style.setProperty(
+                "--bg-opacity",
+                value.opacity.toString()
+              );
+            }}
           />
         </Tooltip>
       ))}
@@ -71,11 +81,13 @@ const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
       placement="bottom"
       title="选择背景"
     >
-      <Button
-        type="text"
-        icon={<BgColorsOutlined />}
-        className="bg-selector-button"
-      />
+      <Tooltip title="切换背景">
+        <Button
+          type="text"
+          icon={<BgColorsOutlined />}
+          className="bg-selector-button"
+        />
+      </Tooltip>
     </Popover>
   );
 };

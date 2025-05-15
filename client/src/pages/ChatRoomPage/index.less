@@ -25,7 +25,7 @@
 
 .chat-room {
   height: 100vh;
-  background: @background-color;
+  background: var(--bg-color);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -45,6 +45,14 @@
     opacity: var(--bg-opacity, 0.05);
     z-index: 0;
     transition: opacity 0.5s ease, background 0.5s ease;
+    pointer-events: none;
+  }
+
+  .header,
+  .sider,
+  .content {
+    position: relative;
+    z-index: 1;
   }
 
   .header {
@@ -52,25 +60,12 @@
     padding: 0;
     border-bottom: 1px solid rgba(5, 5, 5, 0.06);
     height: 64px;
-    position: sticky;
-    top: 0;
-    z-index: 1;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
     .header-left {
       display: flex;
       align-items: center;
-      flex: 1;
       padding: 0 16px;
-    }
-
-    .header-right {
-      padding-right: 16px;
-      display: flex;
-      align-items: center;
     }
 
     .ant-avatar {

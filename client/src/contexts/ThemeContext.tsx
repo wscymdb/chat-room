@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { GradientType } from "@/components/BackgroundSelector";
 
 export type ThemeMode = "light" | "dark" | "system";
 
@@ -6,6 +7,8 @@ interface ThemeContextType {
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
   isDarkMode: boolean;
+  background: GradientType;
+  setBackground: (background: GradientType) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -16,6 +19,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [theme, setTheme] = useState<ThemeMode>(() => {
     const savedTheme = localStorage.getItem("theme");
     return (savedTheme as ThemeMode) || "system";
+  });
+
+  const [background, setBackground] = useState<GradientType>(() => {
+    const savedBackground = localStorage.getItem("background");
+    return (savedBackground as GradientType) || "default";
   });
 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -52,8 +60,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    localStorage.setItem("background", background);
+  }, [background]);
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, isDarkMode }}>
+    <ThemeContext.Provider
+      value={{ theme, setTheme, isDarkMode, background, setBackground }}
+    >
       {children}
     </ThemeContext.Provider>
   );

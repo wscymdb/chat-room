@@ -33,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "code-inspector-plugin": "^0.20.10",
     "less": "^4.3.0",
     "less-loader": "^12.2.0",
     "typescript": "^5.2.2",

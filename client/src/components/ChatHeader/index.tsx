@@ -1,26 +1,20 @@
 import React from "react";
-import { Avatar, Button, Space, Tooltip, Typography } from "antd";
+import { Button, Tooltip, Avatar, Space, Typography } from "antd";
 import {
   LogoutOutlined,
   QuestionCircleOutlined,
-  SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useTheme } from "@/contexts/ThemeContext";
+import BackgroundSelector from "@/components/BackgroundSelector";
 import { UserRole } from "@/types/auth";
-import ThemeSwitch from "../ThemeSwitch";
-import { useNavigate } from "react-router-dom";
-import BackgroundSelector, { GradientType } from "../BackgroundSelector";
 import "./index.less";
-
-const { Text } = Typography;
 
 interface ChatHeaderProps {
   username?: string;
   role?: UserRole;
   onLogout: () => void;
   onShowHelp: () => void;
-  currentBackground?: GradientType;
-  onBackgroundChange?: (type: GradientType) => void;
 }
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
@@ -28,52 +22,59 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   role,
   onLogout,
   onShowHelp,
-  currentBackground,
-  onBackgroundChange,
 }) => {
-  const navigate = useNavigate();
+  const { theme, setTheme, background, setBackground } = useTheme();
+
+  const isAdmin = [UserRole.SUPER_ADMIN, UserRole.ADMIN].includes(
+    role as UserRole
+  );
 
   return (
     <div className="chat-header">
-      <Space className="user-info">
-        <Avatar icon={<UserOutlined />} />
-        <Text>{username}</Text>
+      <Space size={18}>
+        <span className="username">{username}</span>
+        <Avatar icon={<UserOutlined />} className="user-avatar" />
+        {isAdmin && (
+          <Button
+            type="primary"
+            ghost
+            onClick={() => window.open("/admin", "_blank")}
+          >
+            管理后台
+          </Button>
+        )}
       </Space>
-      <Space size="middle" className="header-controls">
-        <Tooltip title="查看机器人使用指南">
+      <div className="header-right">
+        <BackgroundSelector
+          currentBackground={background}
+          onChange={setBackground}
+        />
+        <Tooltip title="切换主题">
           <Button
             type="text"
-            icon={<QuestionCircleOutlined className="header-icon" />}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="theme-toggle"
+          >
+            {theme === "dark" ? "🌞" : "🌙"}
+          </Button>
+        </Tooltip>
+        <Tooltip title="使用帮助">
+          <Button
+            type="text"
+            icon={<QuestionCircleOutlined />}
             onClick={onShowHelp}
-            className="header-button"
+            className="help-button"
           />
         </Tooltip>
-        <ThemeSwitch />
-        {currentBackground && onBackgroundChange && (
-          <BackgroundSelector
-            currentBackground={currentBackground}
-            onChange={onBackgroundChange}
-          />
-        )}
-        {(role === UserRole.ADMIN || role === UserRole.SUPER_ADMIN) && (
-          <Tooltip title="管理设置">
-            <Button
-              type="text"
-              icon={<SettingOutlined className="header-icon" />}
-              onClick={() => navigate("/admin")}
-              className="header-button"
-            />
-          </Tooltip>
-        )}
         <Tooltip title="退出登录">
           <Button
             type="text"
-            icon={<LogoutOutlined className="header-icon" />}
+            icon={<LogoutOutlined />}
             onClick={onLogout}
-            className="header-button header-button-danger"
+            className="logout-button"
           />
         </Tooltip>
-      </Space>
+      </div>
     </div>
   );
 };

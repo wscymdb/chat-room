@@ -1,43 +1,60 @@
 .chat-header {
+  flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
-  height: 60px;
-  background-color: var(--component-background);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  padding: 0 24px;
+  height: 64px;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
   z-index: 1000;
 
-  .user-info {
-    display: flex;
-    align-items: center;
+  .user-avatar {
+    color: #fff;
+    font-size: 18px;
   }
 
-  .header-controls {
+  .username {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  .header-right {
     display: flex;
     align-items: center;
+    gap: 8px;
+
+    .theme-toggle,
+    .help-button,
+    .logout-button {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      border: none;
+      background: transparent;
+      transition: all 0.3s;
+
+      &:hover {
+        color: var(--primary-color);
+        background: var(--item-hover-bg);
+      }
+    }
+  }
+
+  .ant-avatar {
+    background: var(--hover-color);
+  }
+
+  .ant-typography {
+    color: var(--text-color);
   }
 
   .header-icon {
     font-size: 20px;
-  }
-
-  .header-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-
-    &:hover {
-      background-color: var(--item-hover-bg);
-    }
-  }
-
-  .header-button-danger {
-    &:hover {
-      color: #ff4d4f;
-    }
   }
 }
